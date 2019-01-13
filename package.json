@@ -1,0 +1,23 @@
+{
+  "name": "bachelorproef",
+  "version": "1.0.0",
+  "description": "Template voor bachelorproef roadtrip",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm run android --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run android client\""
+  },
+  "author": "Brent De Roeck",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
