@@ -7,7 +7,7 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm run android --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run android client\""
+    "dev": "concurrently \"npm run server\" \"npm run android --prefix client\""
   },
   "author": "Brent De Roeck",
   "license": "MIT",
