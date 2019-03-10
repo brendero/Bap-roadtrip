@@ -118,7 +118,7 @@ export default class Register extends Component {
             </TouchableOpacity>   
             <Text 
               style={{color: '#FFFFFF', marginTop: 2}}
-              onPress={() => navigate('LoginScreen')}
+              onPress={() => navigate('LogInScreen')}
             >Back to login</Text>          
             </View>
         </KeyboardAvoidingView >

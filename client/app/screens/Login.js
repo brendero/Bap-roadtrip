@@ -23,6 +23,9 @@ export default class Login extends Component {
       passwordError: ''
     }
   }
+  onLogin() {
+    this.props.navigation.navigate('HomeScreen');
+  }
   render() {
     const {navigate} = this.props.navigation;
     return (
