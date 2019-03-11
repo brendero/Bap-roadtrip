@@ -37,6 +37,9 @@ const Navigation = createMaterialTopTabNavigator(
       initialRouteName: 'YourTrips',
       swipeEnabled: false,
       tabBarOptions: {
+        tabStyle: {
+          height: 40
+        },
         labelStyle: {
           fontFamily: 'roboto',
           fontSize: 12,

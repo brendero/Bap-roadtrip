@@ -82,6 +82,7 @@ export default class Register extends Component {
                 <TextInput
                   style={{padding: 0, width: '100%'}}
                   value={this.state.password}
+                  secureTextEntry={true}
                   placeholder="Password"
                   onChangeText={value => {
                     this.setState({
@@ -100,6 +101,7 @@ export default class Register extends Component {
                 <TextInput
                   style={{padding: 0, width: '100%'}}
                   value={this.state.confirmedPassword}
+                  secureTextEntry={true}
                   placeholder="Confirm password"
                   onChangeText={value => {
                     this.setState({
