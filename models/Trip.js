@@ -70,7 +70,20 @@ const tripSchema = new Schema({
         }
       ] 
      }
-   ]
+   ],
+   createdAt: {
+    type: Date,
+    required: true,
+    default: Date.now()
+  },
+  deletedAt: {
+    type: Date
+  },
+  archived: {
+    type: Boolean,
+    default: false,
+    required: true
+  }
   // Add more data
    // Add messages
 });

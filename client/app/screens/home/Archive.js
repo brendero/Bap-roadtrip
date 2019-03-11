@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { ScrollView } from 'react-native'
+import ArchiveItem from '../../components/Trips/ArchiveItem';
 
 export default class Archive extends Component {
   render() {
     return (
-      <View>
-        <Text> Archive </Text>
-      </View>
+      <ScrollView style={{height: '100%'}}>
+        <ArchiveItem></ArchiveItem>
+        <ArchiveItem></ArchiveItem>
+        <ArchiveItem></ArchiveItem>
+      </ScrollView>
     )
   }
 }

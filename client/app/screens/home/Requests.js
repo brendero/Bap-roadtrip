@@ -1,12 +1,22 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
+import RequestItem from '../../components/Trips/RequestItem';
 
 export default class Requests extends Component {
   render() {
     return (
-      <View>
-        <Text> Trip Requests </Text>
-      </View>
+      <ScrollView style={styles.container}>
+        <RequestItem></RequestItem>
+        <RequestItem></RequestItem>
+        <RequestItem></RequestItem>
+        <RequestItem></RequestItem>
+      </ScrollView>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: '100%'
+  }
+})

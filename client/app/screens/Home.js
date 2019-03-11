@@ -35,17 +35,19 @@ const Navigation = createMaterialTopTabNavigator(
   },
   {
       initialRouteName: 'YourTrips',
-      swipeEnabled: true,
+      swipeEnabled: false,
       tabBarOptions: {
         labelStyle: {
+          fontFamily: 'roboto',
           fontSize: 12,
           color: '#000000'
         },
         style: {
-          backgroundColor: 'transparent',
+          backgroundColor: 'transparent'
         },
         indicatorStyle: {
           backgroundColor: colors.main,
+          height: 4
         }
       }
     }    

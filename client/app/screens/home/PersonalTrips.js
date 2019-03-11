@@ -1,11 +1,24 @@
 import React, { Component } from 'react'
 import { Text, View, ScrollView, StyleSheet } from 'react-native'
+import TripItem from '../../components/Trips/TripItem';
 
 export default class PersonalTrips extends Component {
   render() {
     return (
       <ScrollView style={styles.tripWrapper}>
-        <Text> Your Trips </Text>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
+        <TripItem ></TripItem>
       </ScrollView>
     )
   }
@@ -13,6 +26,6 @@ export default class PersonalTrips extends Component {
 
 const styles = StyleSheet.create({
   tripWrapper: {
-    height: '100%',
+    height: '100%'
   }
 })
