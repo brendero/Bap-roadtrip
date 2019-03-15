@@ -4,13 +4,18 @@ import {
   Image,
   ImageBackground,
   StyleSheet,
-  Text
+  Text,
+  AsyncStorage
 } from 'react-native';
+import FontAwesome, {Icons } from 'react-native-fontawesome';
 import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
 import { colors } from '../config/styles';
 import PersonalTrips from './home/PersonalTrips';
 import Requests from './home/Requests';
 import Archive from './home/Archive';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { logoutUser } from '../actions/authActions';
 
 const Navigation = createMaterialTopTabNavigator(
   {
@@ -33,7 +38,7 @@ const Navigation = createMaterialTopTabNavigator(
       }
     },
   },
-  {
+    {
       initialRouteName: 'YourTrips',
       swipeEnabled: false,
       tabBarOptions: {
@@ -46,7 +51,7 @@ const Navigation = createMaterialTopTabNavigator(
           color: '#000000'
         },
         style: {
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
         },
         indicatorStyle: {
           backgroundColor: colors.main,
@@ -55,16 +60,26 @@ const Navigation = createMaterialTopTabNavigator(
       }
     }    
   );
-
 const TripNavigator = createAppContainer(Navigation);
-export class Home extends Component {
+class Home extends Component {
+  componentDidMount() {
+    console.log(this.props.auth.isAuthenticated);
+  }
+  Logout() {
+    this.props.logoutUser();
+
+  }
   render() {
+    const { user } = this.props.auth;
+
     return (
       <View>
+        {/* TODO: add logoutbtn */}
         <View style={styles.profilePicWrapper}>
           <ImageBackground source={require('../assets/fog-foggy-forest-4827.jpg')} style={styles.profileBackground}>
+            <FontAwesome style={styles.logoutBtn} onPress={this.Logout}>{Icons.signOut}</FontAwesome>
             <Image source={require('../assets/forest-haze-hd-wallpaper-39811.jpg')} style={styles.profilePic}></Image>
-            <Text style={styles.profileName}>Stephanie Krekel</Text>
+            <Text style={styles.profileName}>{user.name}</Text>
           </ImageBackground>
         </View>
         <View style={{height: '100%'}}>
@@ -75,6 +90,16 @@ export class Home extends Component {
   }
 }
 
+Home.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, {logoutUser})(Home);
 
 const styles = StyleSheet.create({
   profilePicWrapper : {
@@ -99,6 +124,12 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 19,
     color: '#FFFFFF'
+  },
+  logoutBtn: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    fontSize: 25,
+    color: colors.secondaryDark
   }
-})
-export default Home;
+});

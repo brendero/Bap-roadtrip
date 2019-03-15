@@ -8,11 +8,14 @@ import {
   Image,
   TouchableOpacity,
   KeyboardAvoidingView  } from 'react-native';
+import PropTypes from 'prop-types';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 import validate from '../components/Forms/ValidateWrapper';
+import { connect } from 'react-redux';
+import { registerUser } from '../actions/authActions';
 import { colors } from '../config/styles';
 
-export default class Register extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
 
@@ -21,21 +24,39 @@ export default class Register extends Component {
       name: '',
       password: '',
       confirmedPassword: '',
-      emailError: '',
-      passwordError: '',
-      confirmedPasswordError: ''
+      errors: {}
     }
+
+    this.onRegister = this.onRegister.bind(this);
   }
-  confirmPassword() {
-    if(this.state.password != this.state.confirmedPassword) {
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.errors) {
       this.setState({
-        confirmedPasswordError: 'the passwords do not match'
+        errors: nextProps.errors
       })
     }
   }
+
+  onRegister() {
+
+    const newUser = {
+      email: this.state.email,
+      name: this.state.name,
+      password: this.state.password,
+      password2 : this.state.confirmedPassword,
+    }
+    
+    this.props.registerUser(newUser);
+
+  }
   render() {
     const {navigate} = this.props.navigation;
+
+    const {errors} = this.state;
+
     return (
+      // TODO: make errors not push back the register button
       <ImageBackground source={require('../assets/forest-haze-hd-wallpaper-39811.jpg')} style={styles.backgroundImage}>
         <KeyboardAvoidingView 
           behavior="position"
@@ -57,16 +78,11 @@ export default class Register extends Component {
                     this.setState({
                       email: value.trim()
                     })
-                  }}
-                  onBlur={() => {
-                    this.setState({
-                      emailError: validate('email', this.state.email)
-                    })
-                  }}
-                  error={this.state.emailError}/>
+                  }}/>
               </View>
+              {errors.email ? <Text style={styles.errorMsg}>{errors.email}</Text> : null}
               <View style={styles.formInput}>
-                <FontAwesome style={styles.inputIcons}>{Icons.lock}</FontAwesome>
+                <FontAwesome style={styles.inputIcons}>{Icons.user}</FontAwesome>
                 <TextInput
                   style={{padding: 0, width: '100%'}}
                   value={this.state.name}
@@ -77,6 +93,7 @@ export default class Register extends Component {
                     })
                   }} />
               </View>
+              {errors.name ? <Text style={styles.errorMsg}>{errors.name}</Text> : null}
               <View style={styles.formInput}>
                 <FontAwesome style={styles.inputIcons}>{Icons.lock}</FontAwesome>
                 <TextInput
@@ -88,14 +105,9 @@ export default class Register extends Component {
                     this.setState({
                       password: value
                     })
-                  }}
-                  onBlur={() => {
-                    this.setState({
-                      passwordError: validate('password', this.state.password)
-                    })
-                  }}
-                  error={this.state.passwordError}/>
+                  }}/>
               </View>
+              {errors.password ? <Text style={styles.errorMsg}>{errors.password}</Text> : null}
               <View style={styles.formInput}>
                 <FontAwesome style={styles.inputIcons}>{Icons.lock}</FontAwesome>
                 <TextInput
@@ -107,15 +119,12 @@ export default class Register extends Component {
                     this.setState({
                       confirmedPassword: value
                     })
-                  }}
-                  onBlur={() => {
-                    this.confirmPassword();
-                  }}
-                  error={this.state.confirmedPasswordError}/>
+                  }}/>
               </View>
+              {errors.password2 ? <Text style={styles.errorMsg}>{errors.password2}</Text> : null}
             </View>
             <View style={styles.buttonWrapper}>
-            <TouchableOpacity onPress={() => {this.onRegister()}} style={styles.RegisterBtn}>
+            <TouchableOpacity onPress={this.onRegister} style={styles.RegisterBtn}>
                 <Text style={{color:'#FFFFFF'}}>Register</Text>
             </TouchableOpacity>   
             <Text 
@@ -128,6 +137,19 @@ export default class Register extends Component {
     )
   }
 }
+
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, { registerUser })(Register);
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -191,6 +213,10 @@ const styles = StyleSheet.create({
     padding: 11,
     width: '35%',
     borderRadius: 11,
+    alignSelf: 'center'
+  },
+  errorMsg: {
+    color: 'red',
     alignSelf: 'center'
   }
 });

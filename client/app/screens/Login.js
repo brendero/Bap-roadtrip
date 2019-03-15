@@ -11,23 +11,43 @@ import {
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 import validate from '../components/Forms/ValidateWrapper';
 import { colors } from '../config/styles';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginUser } from '../actions/authActions';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       email: '',
       password: '',
-      emailError: '',
-      passwordError: ''
+      errors: {}
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.auth.isAuthenticated) {
+      this.props.navigation.navigate('HomeScreen');
+    }
+    if(nextProps.errors) {
+      this.setState({errors: nextProps.errors});
     }
   }
   onLogin() {
-    this.props.navigation.navigate('HomeScreen');
+    
+    const userData = {
+      email: this.state.email,
+      password: this.state.password
+    }
+
+    this.props.loginUser(userData);
   }
   render() {
     const {navigate} = this.props.navigation;
+
+    const { errors } = this.state;
+
     return (
       <ImageBackground source={require('../assets/forest-haze-hd-wallpaper-39811.jpg')} style={styles.backgroundImage}>
         <KeyboardAvoidingView 
@@ -58,6 +78,7 @@ export default class Login extends Component {
                   }}
                   error={this.state.emailError}/>
               </View>
+              {errors.email ? <Text style={styles.errorMsg}>{errors.email}</Text> : null}
               <View style={styles.formInput}>
                 <FontAwesome style={styles.inputIcons}>{Icons.lock}</FontAwesome>
                 <TextInput
@@ -77,6 +98,7 @@ export default class Login extends Component {
                   }}
                   error={this.state.passwordError}/>
               </View>
+              {errors.password ? <Text style={styles.errorMsg}>{errors.password}</Text> : null}
             </View>
             <View style={styles.buttonWrapper}>
             <TouchableOpacity onPress={() => {this.onLogin()}} style={styles.loginBtn}>
@@ -92,6 +114,18 @@ export default class Login extends Component {
     )
   }
 }
+
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+}
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors
+})
+
+export default connect(mapStateToProps, { loginUser })(Login)
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -155,6 +189,10 @@ const styles = StyleSheet.create({
     padding: 11,
     width: '35%',
     borderRadius: 11,
+    alignSelf: 'center'
+  },
+  errorMsg: {
+    color: 'red',
     alignSelf: 'center'
   }
 });
