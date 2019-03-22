@@ -71,7 +71,7 @@ class Register extends Component {
               <View style={styles.formInput}>
                 <FontAwesome style={styles.inputIcons}>{Icons.envelopeO}</FontAwesome>
                 <TextInput
-                  style={{padding: 0}}
+                  style={{padding: 0, width: '80%'}}
                   value={this.state.email}
                   placeholder="E-mail"
                   onChangeText={value => {
@@ -84,7 +84,7 @@ class Register extends Component {
               <View style={styles.formInput}>
                 <FontAwesome style={styles.inputIcons}>{Icons.user}</FontAwesome>
                 <TextInput
-                  style={{padding: 0, width: '100%'}}
+                  style={{padding: 0, width: '80%'}}
                   value={this.state.name}
                   placeholder="Full Name"
                   onChangeText={value => {
@@ -97,7 +97,7 @@ class Register extends Component {
               <View style={styles.formInput}>
                 <FontAwesome style={styles.inputIcons}>{Icons.lock}</FontAwesome>
                 <TextInput
-                  style={{padding: 0, width: '100%'}}
+                  style={{padding: 0, width: '80%'}}
                   value={this.state.password}
                   secureTextEntry={true}
                   placeholder="Password"
@@ -111,7 +111,7 @@ class Register extends Component {
               <View style={styles.formInput}>
                 <FontAwesome style={styles.inputIcons}>{Icons.lock}</FontAwesome>
                 <TextInput
-                  style={{padding: 0, width: '100%'}}
+                  style={{padding: 0, width: '80%'}}
                   value={this.state.confirmedPassword}
                   secureTextEntry={true}
                   placeholder="Confirm password"

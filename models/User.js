@@ -16,10 +16,8 @@ const UserSchema = new Schema({
     },
     avatar: {
         type: String,
-    },
-    trips: {
-        type: [Schema.Types.ObjectId],
-        ref: 'Trip'
+        required: true,
+        default: 'http://s3.amazonaws.com/37assets/svn/765-default-avatar.png'
     },
     createdAt: {
         type: Date,

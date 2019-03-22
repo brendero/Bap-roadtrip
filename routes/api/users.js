@@ -12,10 +12,6 @@ const validateLoginInput = require('../../validation/login');
 // User Model
 const User = require('../../models/User');
 
-// Login user
-// Access: public
-router.get('/', (req, res) => res.json());
-
 // Register new User
 // Access: Public
 router.post('/register', (req, res) => {
@@ -76,7 +72,7 @@ router.post('/login', (req, res) => {
         .then(isMatch => {
           if(isMatch) {
             // Create payload
-            const payload = { id: user.id, name: user.name }
+            const payload = { id: user.id, name: user.name, avatar: user.avatar }
             // Sign Token
             jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 },(err, token) => {
               res.json({
@@ -90,16 +86,6 @@ router.post('/login', (req, res) => {
           }
         })
     })
-})
-
-// current user
-// access Private
-router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.json({
-    id: req.user.id,
-    email: req.user.email,
-    name: req.user.name
-  });
 })
 
 module.exports = router;

@@ -1,12 +1,27 @@
 import React, {Component} from 'react';
-import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
 import Login from './app/screens/Login';
 import Register from './app/screens/Register';
 import Home from './app/screens/Home';
 import { Provider } from 'react-redux';
 import store from './app/config/store';
+import PhotoRoll from './app/screens/PhotoRoll';
+import FontAwesome,{ Icons } from 'react-native-fontawesome';
 
 // Base Navigator
+const avatarNavigator = createStackNavigator({
+  PhotoRoll: {
+    screen: PhotoRoll,
+    navigationOptions: {
+        title: 'PhotoRoll',
+        headerLeft: <FontAwesome style={{fontSize: 20, color: "black"}}>{Icons.chevronLeft}</FontAwesome>
+        }
+  },
+  HomeScreen: {
+    screen: Home
+  }});
+
+
 const Navigation = createSwitchNavigator(
   {
     LogInScreen: {
@@ -17,6 +32,9 @@ const Navigation = createSwitchNavigator(
     },
     HomeScreen: {
       screen: Home
+    },
+    PhotoRoll: {
+      screen: avatarNavigator
     }
   },
   {

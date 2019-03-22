@@ -2,24 +2,41 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const tripSchema = new Schema({
-   collaborators: {
+  name: {
+    type: String,
+    required: true
+  },  
+  collaborators: {
      type: [Schema.Types.ObjectId],
      ref: 'User'
-   },
-   admin: {
+  },
+  admin: {
      type: Schema.Types.ObjectId,
      ref: 'User',
      required: true
-   },
-   stops: [
-     {
+  },
+  location: {
+      addres: {
+        type: String,
+        required: true
+      },
+      lat: {
+        type: String,
+        required: true
+      },
+      lng: {
+        type: String,
+        required: true
+      }
+    },
+  stops: [
+    {
         name :{
           type: String,
           required: true
         },
-        location: [
-          {
-            adress: {
+        location: {
+            addres: {
               type: String,
               required: true
             },
@@ -31,8 +48,7 @@ const tripSchema = new Schema({
               type: String,
               required: true
             }
-          }
-        ] 
+        }
      },
    ],
    bookings: [
@@ -53,9 +69,8 @@ const tripSchema = new Schema({
          type: Date,
          required: true
        },
-       location: [
-        {
-          adress: {
+       location: {
+          addres: {
             type: String,
             required: true
           },
@@ -68,7 +83,6 @@ const tripSchema = new Schema({
             required: true
           }
         }
-      ] 
      }
    ],
    createdAt: {

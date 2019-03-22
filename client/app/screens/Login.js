@@ -24,6 +24,9 @@ class Login extends Component {
       password: '',
       errors: {}
     }
+
+    this.onLogin = this.onLogin.bind(this);
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,7 +66,7 @@ class Login extends Component {
               <View style={styles.formInput}>
                 <FontAwesome style={styles.inputIcons}>{Icons.envelopeO}</FontAwesome>
                 <TextInput
-                  style={{padding: 0}}
+                  style={{padding: 0, width: '80%'}}
                   value={this.state.email}
                   placeholder="E-mail"
                   onChangeText={value => {
@@ -82,7 +85,7 @@ class Login extends Component {
               <View style={styles.formInput}>
                 <FontAwesome style={styles.inputIcons}>{Icons.lock}</FontAwesome>
                 <TextInput
-                  style={{padding: 0, width: '100%'}}
+                  style={{padding: 0, width: '80%'}}
                   value={this.state.password}
                   secureTextEntry={true}
                   placeholder="Password"
@@ -101,7 +104,7 @@ class Login extends Component {
               {errors.password ? <Text style={styles.errorMsg}>{errors.password}</Text> : null}
             </View>
             <View style={styles.buttonWrapper}>
-            <TouchableOpacity onPress={() => {this.onLogin()}} style={styles.loginBtn}>
+            <TouchableOpacity onPress={this.onLogin} style={styles.loginBtn}>
                 <Text style={{color:'#FFFFFF'}}>login</Text>
             </TouchableOpacity>   
             <Text 

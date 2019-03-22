@@ -5,17 +5,19 @@ import {
   ImageBackground,
   StyleSheet,
   Text,
-  AsyncStorage
+  TouchableHighlight,
+  TouchableOpacity
 } from 'react-native';
-import FontAwesome, {Icons } from 'react-native-fontawesome';
 import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
-import { colors } from '../config/styles';
+import { connect } from 'react-redux';
+import { logoutUser } from '../actions/authActions';
 import PersonalTrips from './home/PersonalTrips';
 import Requests from './home/Requests';
 import Archive from './home/Archive';
-import { connect } from 'react-redux';
+import FontAwesome, {Icons } from 'react-native-fontawesome';
+import { colors } from '../config/styles';
 import PropTypes from 'prop-types';
-import { logoutUser } from '../actions/authActions';
+import { PermissionsAndroid } from 'react-native';
 
 const Navigation = createMaterialTopTabNavigator(
   {
@@ -36,11 +38,11 @@ const Navigation = createMaterialTopTabNavigator(
       navigationOptions: {
         title: 'archive'
       }
-    },
+    }
   },
     {
       initialRouteName: 'YourTrips',
-      swipeEnabled: false,
+      swipeEnabled: false,  
       tabBarOptions: {
         tabStyle: {
           height: 40
@@ -60,29 +62,56 @@ const Navigation = createMaterialTopTabNavigator(
       }
     }    
   );
+
 const TripNavigator = createAppContainer(Navigation);
 class Home extends Component {
-  componentDidMount() {
-    console.log(this.props.auth.isAuthenticated);
+  constructor(props) {
+    super(props);
+
+    this.Logout = this.Logout.bind(this);
+    this.checkPermission = this.checkPermission.bind(this);
+  }
+  componentWillReceiveProps(nextProps) {
+    if(!nextProps.auth.isAuthenticated) {
+      this.props.navigation.navigate('LogInScreen');
+    }
   }
   Logout() {
     this.props.logoutUser();
-
+  }
+  checkPermission() {
+    const granted = PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)
+    granted.then( 
+      res => {
+        if(res === PermissionsAndroid.RESULTS.GRANTED) {
+          this.props.navigation.navigate("PhotoRoll")
+        }
+        else {
+          console.log("Photos permission denied")
+        }
+      }
+    ).catch(
+      err => console.log(err)
+    )
   }
   render() {
     const { user } = this.props.auth;
 
     return (
       <View>
-        {/* TODO: add logoutbtn */}
         <View style={styles.profilePicWrapper}>
           <ImageBackground source={require('../assets/fog-foggy-forest-4827.jpg')} style={styles.profileBackground}>
-            <FontAwesome style={styles.logoutBtn} onPress={this.Logout}>{Icons.signOut}</FontAwesome>
-            <Image source={require('../assets/forest-haze-hd-wallpaper-39811.jpg')} style={styles.profilePic}></Image>
+            <TouchableHighlight style={styles.logoutBtn} onPress={this.Logout}><FontAwesome style={styles.logoutIcon}>{Icons.signOut}</FontAwesome></TouchableHighlight>
+            <TouchableOpacity onPress={this.checkPermission}>
+            <Image source={{uri: user.avatar}} style={styles.profilePic}/>
+            </TouchableOpacity>
             <Text style={styles.profileName}>{user.name}</Text>
           </ImageBackground>
         </View>
-        <View style={{height: '100%'}}>
+        <View style={{height: 447}}>
+          <TouchableOpacity style={styles.addBtn}>
+            <FontAwesome style={styles.addBtnIcon}>{Icons.plus}</FontAwesome>
+          </TouchableOpacity> 
           <TripNavigator></TripNavigator>
         </View>
       </View>
@@ -129,7 +158,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     right: 20,
+  },
+  logoutIcon: {
     fontSize: 25,
-    color: colors.secondaryDark
+    color: colors.secondaryDark,
+  },
+  addBtn: {
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    backgroundColor: colors.main,
+    alignItems: "center",
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 20,
+    right: 20
+  },
+  addBtnIcon: {
+    color: 'white',
+    fontSize: 20    
   }
 });
