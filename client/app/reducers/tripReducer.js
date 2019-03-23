@@ -1,4 +1,4 @@
-import { GET_TRIPS, TRIPS_LOADING, DELETE_TRIP, ADD_TRIP } from "../actions/types";
+import { GET_TRIPS, TRIPS_LOADING, DELETE_TRIP, ADD_TRIP, UPDATE_TRIP } from "../actions/types";
 
 const initialState = {
   isLoading: false,
@@ -23,6 +23,8 @@ export default function(state = initialState, action) {
         ...state,
         trips: [action.payload, ...state.trips]
       }
+    case UPDATE_TRIP:
+      Object.assign(state.trips.find(b => b._id === action.payload._id),action.payload)
     case DELETE_TRIP:
       return {
         ...state,

@@ -4,7 +4,7 @@ import Fontawesome, { Icons } from 'react-native-fontawesome';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { colors } from '../../config/styles';
 import { connect } from 'react-redux';
-import { deleteTrip } from '../../actions/tripActions';
+import { deleteTrip, updateTrip } from '../../actions/tripActions';
 import PropTypes from 'prop-types';
 
 class TripItem extends Component {
@@ -29,8 +29,11 @@ class TripItem extends Component {
     })
   }
   onArchive() {
-    console.log('archive');
-    console.log(this.props.id);
+    const archivableTrip = {
+      id: this.props.id,
+      archived: true
+    }
+    this.props.updateTrip(archivableTrip);
   }
   onDelete() {
     this.props.deleteTrip(this.props.id);
@@ -69,13 +72,15 @@ class TripItem extends Component {
 
 TripItem.propTypes = {
   deleteTrip: PropTypes.func.isRequired,
+  updateTrip: PropTypes.func.isRequired,
   trip: PropTypes.object.isRequired
 }
 const mapStateToProps = (state) => ({
   trip: state.trip
 })
 
-export default connect(mapStateToProps, { deleteTrip })(TripItem)
+export default connect(mapStateToProps, { deleteTrip, updateTrip })(TripItem)
+
 const styles = StyleSheet.create({
   mainWrapper: {
     width: '90%',

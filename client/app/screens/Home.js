@@ -102,9 +102,12 @@ class Home extends Component {
         <View style={styles.profilePicWrapper}>
           <ImageBackground source={require('../assets/fog-foggy-forest-4827.jpg')} style={styles.profileBackground}>
             <TouchableHighlight style={styles.logoutBtn} onPress={this.Logout}><FontAwesome style={styles.logoutIcon}>{Icons.signOut}</FontAwesome></TouchableHighlight>
-            <TouchableOpacity onPress={this.checkPermission}>
-            <Image source={{uri: user.avatar}} style={styles.profilePic}/>
-            </TouchableOpacity>
+            <View>
+              <TouchableOpacity onPress={this.checkPermission}>
+              <Image source={{uri: user.avatar}} style={styles.profilePic}/>
+              <FontAwesome style={{fontSize:20, color: 'white', backgroundColor: colors.secondaryLight, padding: 10, borderRadius: 100, position: 'absolute', bottom: 0, right: 0}}>{Icons.pencil}</FontAwesome>
+              </TouchableOpacity>
+            </View>
             <Text style={styles.profileName}>{user.name}</Text>
           </ImageBackground>
         </View>

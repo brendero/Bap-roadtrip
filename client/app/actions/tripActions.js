@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ERRORS, GET_TRIPS, TRIPS_LOADING, DELETE_TRIP, ADD_TRIP } from './types';
+import { GET_ERRORS, GET_TRIPS, TRIPS_LOADING, DELETE_TRIP, ADD_TRIP, UPDATE_TRIP } from './types';
 
 export const getTrips = () => dispatch => {
   dispatch(setTripsLoading());
@@ -27,6 +27,16 @@ export const addTrip = (trip) => dispatch => {
       payload: err.response.data
     }))
   
+}
+
+export const updateTrip = (trip) => dispatch => {
+  axios
+    .post('http://192.168.1.42:5000/api/trips', trip)
+    .then(res => dispatch({
+      type: UPDATE_TRIP,
+      payload: res.data
+    }))
+    .catch(err => console.log(err))
 }
 
 export const deleteTrip = (id) => dispatch => {

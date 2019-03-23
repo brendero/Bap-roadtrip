@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, CameraRoll, Image, TouchableOpacity } from 'react-native'
+import { ScrollView, CameraRoll, Image, TouchableOpacity, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -29,9 +29,13 @@ class PhotoRoll extends Component {
       console.log(err);
     });
   }
-  avatarChange() {
-    console.log('jeweetClickWerkt');
-    this.props.navigation.navigate('HomeScreen');
+  avatarChange(uri) {
+    console.log(uri);
+    // Save image on online image hosting service and return URL
+    //change this.props.auth.user avatar
+    //do Action update avatar to mongoDB
+    // navigate to homescreen
+    // this.props.navigation.navigate('HomeScreen');
   }
   render() {
 
@@ -39,7 +43,7 @@ class PhotoRoll extends Component {
       <ScrollView>
         {this.state.photos && JSON.stringify(this.state.photos) != "{}" ? this.state.photos.map((p, i) => {
         return (
-          <TouchableOpacity onPress={this.avatarChange} key={i}>
+          <TouchableOpacity onPress={() => this.avatarChange(p.node.image.uri)} key={i}>
             <Image
               style={{
                 width: 100,

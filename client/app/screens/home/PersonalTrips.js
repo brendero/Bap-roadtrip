@@ -8,6 +8,7 @@ import { getTrips } from '../../actions/tripActions';
 class PersonalTrips extends Component {
   componentDidMount() {
     this.props.getTrips();
+    // Object.assign(trips.find(b => b._id === action.payload),action.payload)
   }
   render() {
     const { trips } = this.props.trip;

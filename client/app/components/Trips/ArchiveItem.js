@@ -4,7 +4,7 @@ import Fontawesome, {Icons} from 'react-native-fontawesome';
 import { colors } from '../../config/styles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteTrip } from '../../actions/tripActions';
+import { deleteTrip, updateTrip } from '../../actions/tripActions';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 class ArchiveItem extends Component {
@@ -14,6 +14,9 @@ class ArchiveItem extends Component {
     this.state = {
       btnToggle: false
     }
+
+    this.onDelete = this.onDelete.bind(this);
+    this.onRestore = this.onRestore.bind(this);
   }
   openButtons() {
     this.setState({
@@ -26,7 +29,12 @@ class ArchiveItem extends Component {
     })
   }
   onRestore() {
-    console.log('restore');
+    const restorableTrip = {
+      id: this.props.id,
+      archived: false
+    }
+
+    this.props.updateTrip(restorableTrip);
   }
   onDelete() {
     this.props.deleteTrip(this.props.id);
@@ -68,13 +76,14 @@ class ArchiveItem extends Component {
 }
 ArchiveItem.propTypes = {
   deleteTrip: PropTypes.func.isRequired,
+  updateTrip: PropTypes.func.isRequired,
   trip: PropTypes.object.isRequired
 }
 const mapStateToProps = (state) => ({
   trip: state.trip
 })
 
-export default connect(mapStateToProps, { deleteTrip })(ArchiveItem)
+export default connect(mapStateToProps, { deleteTrip, updateTrip })(ArchiveItem)
 
 const styles = StyleSheet.create({
   mainWrapper: {

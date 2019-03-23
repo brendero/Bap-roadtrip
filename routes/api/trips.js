@@ -20,26 +20,37 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
     .catch(err => res.status(404).json(err));
 })
 
-// Creating new trip route
-// Access: Private
+// DESC: create or update a trip
+// Acces: Private
 router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
-  const newTrip = new Trip({
-    name:  req.body.name,
-    admin: req.user.id,
-    collaborators: req.user.id,
-    location: {
-      addres: req.body.location.addres,
-      lat: req.body.location.lattitude,
-      lng: req.body.location.longitude 
-    }
-  })
 
-  newTrip.save()
-    .then(trip => res.json(trip))
-    .catch(err => res.json(err))
+  Trip.findById(req.body.id)
+    .then(trip => {
+      if(trip) {
+        Trip.findByIdAndUpdate(trip.id, {$set: req.body}, { new: true})
+          .then(trip => res.json(trip))
+          .catch(err => res.status(404).json({succes: false}))
+      }
+      else {
+        const newTrip = new Trip({
+          name:  req.body.name,
+          admin: req.user.id,
+          collaborators: req.user.id,
+          location: {
+            addres: req.body.location.addres,
+            lat: req.body.location.lattitude,
+            lng: req.body.location.longitude 
+          }
+        })
+      
+        newTrip.save()
+          .then(trip => res.json(trip))
+          .catch(err => res.json(err))
+      }
+    })
 })
 
-// DESC: Delete an item
+// DESC: Delete a trip
 // Access: Private
 router.delete('/:id', passport.authenticate('jwt', {session: false}), (req,res) => {
   Trip.findById(req.params.id)

@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import {
+  TouchableOpacity
+} from 'react-native';
 import { createStackNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
 import Login from './app/screens/Login';
 import Register from './app/screens/Register';
@@ -12,13 +15,9 @@ import FontAwesome,{ Icons } from 'react-native-fontawesome';
 const avatarNavigator = createStackNavigator({
   PhotoRoll: {
     screen: PhotoRoll,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
         title: 'PhotoRoll',
-        headerLeft: <FontAwesome style={{fontSize: 20, color: "black"}}>{Icons.chevronLeft}</FontAwesome>
-        }
-  },
-  HomeScreen: {
-    screen: Home
+    })
   }});
 
 
