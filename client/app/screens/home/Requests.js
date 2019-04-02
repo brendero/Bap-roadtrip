@@ -1,19 +1,41 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, Text } from 'react-native'
 import RequestItem from '../../components/Trips/RequestItem';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getRequests } from '../../actions/requestActions';
 
-export default class Requests extends Component {
+class Requests extends Component {
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount() {
+    this.props.getRequests();
+  }
   render() {
+    const { requests } = this.props.request;
+
+    console.log(this.props.request);
     return (
       <ScrollView style={styles.container}>
-        <RequestItem></RequestItem>
-        <RequestItem></RequestItem>
-        <RequestItem></RequestItem>
-        <RequestItem></RequestItem>
+        {requests && JSON.stringify(requests) != "{}" ? requests.map(({ _id, requestingUserId, tripId }) => (
+          <RequestItem key={_id} requesterId={requestingUserId} trip={tripId}></RequestItem>          
+        )) : <Text>No Requests yet for this user</Text>}
       </ScrollView>
     )
   }
 }
+
+Requests.propTypes = {
+  request: PropTypes.object.isRequired,
+  getRequests: PropTypes.func.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  request: state.request
+})
+
+export default connect(mapStateToProps, {getRequests})(Requests)
 
 const styles = StyleSheet.create({
   container: {

@@ -41,9 +41,7 @@ class TripItem extends Component {
   render() {
     return (
       <View style={[styles.mainWrapper, this.state.btnToggle ? styles.btnShow : '']}>
-
       <GestureRecognizer onSwipeLeft={() => this.openButtons()} onSwipeRight={() => this.closeButtons()}>
-      {/* Add onPress event to View */}
       <Animated.View style={styles.container} >
           <Image source={require('../../assets/fog-foggy-forest-4827.jpg')} style={styles.tripThumbnail}></Image>
           <View style={styles.infoWrapper}>

@@ -8,16 +8,18 @@ import { getTrips } from '../../actions/tripActions';
 class PersonalTrips extends Component {
   componentDidMount() {
     this.props.getTrips();
-    // Object.assign(trips.find(b => b._id === action.payload),action.payload)
   }
   render() {
     const { trips } = this.props.trip;
-    console.log(trips);
+    const { navigate } = this.props.navigation;
+
     return (
       <ScrollView style={styles.tripWrapper}>
       {trips && JSON.stringify(trips) != "{}" ? trips.map(({ _id, name, location, collaborators, archived }) => (
-          archived ? null : <TripItem name={name} location={location.addres} membersCount={collaborators.length} id={_id} key={_id}></TripItem>
-          
+          archived ? 
+          null :
+          // Add onpress event onPress={() => {navigate('DetailPage', {Trip: _id})}} tht actually works
+          <TripItem name={name} location={location.addres} membersCount={collaborators.length} id={_id} key={_id}></TripItem>          
         )) : <Text>No trips yet for this user</Text>}
       </ScrollView>
     )

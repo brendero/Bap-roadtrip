@@ -8,5 +8,8 @@ export const GET_TRIPS = "GET_TRIPS";
 export const DELETE_TRIP = "DELETE_TRIP";
 export const TRIPS_LOADING = "TRIPS_LOADING";
 
+export const GET_REQUEST = "GET_REQUEST";
+export const ADD_REQUEST = "ADD_REQUEST";
+export const REQUESTS_LOADING = "REQUESTS_LOADING";
 
 export const GET_ERRORS = "GET_ERRORS";

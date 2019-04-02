@@ -48,6 +48,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
           .catch(err => res.json(err))
       }
     })
+    .catch(err => res.json(err));
 })
 
 // DESC: Delete a trip

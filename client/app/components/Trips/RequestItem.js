@@ -1,22 +1,57 @@
 import React, { Component } from 'react'
 import { Text, View, Image, TouchableHighlight, StyleSheet } from 'react-native'
 import Fontawesome, { Icons } from 'react-native-fontawesome';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
+class RequestItem extends Component {
+  constructor(props) {
+    super(props);
 
-export default class RequestItem extends Component {
+    this.state = {
+      user: '',
+      trip: ''
+    }
+    this.onApprove = this.onApprove.bind(this);
+    this.onDeny = this.onDeny.bind(this);
+  }
+  // make a function that gets trips name from id
+  getTripById() {
+
+  }
+  // make a functiokn that gets requestingUsers name from id
+  getUserById() {
+
+  }
+  onApprove() {
+    const updatedRequest = {
+      id: this.props.id,
+      status: true
+    }
+    this.props.updateRequest(updatedRequest);
+    const updatedTrip = {
+      id: this.props.id,
+      //collaborator
+    }
+
+    this.props.updateTrip(updatedTrip);
+  }
+  onDeny() {
+    this.props.deleteRequest();
+  }
   render() {
     return (
       <View style={styles.container}>
         <Image source={require('../../assets/forest-haze-hd-wallpaper-39811.jpg')} style={styles.tripThumbnail}></Image>
         <View style={styles.infoWrapper}>
-          <Text style={styles.userName}>Frederick De Clipeleir</Text>
-          <Text style={styles.tripName}>Uitstapke me zen 2</Text>
+          <Text style={styles.userName}>{this.props.adminName}</Text>
+          <Text style={styles.tripName}>{this.props.tripName}</Text>
         </View>
-        <View style={styles.btnWrapper}>
-          <TouchableHighlight style={styles.btnApproved}>
+        <View style={styles.btnWrapper}> 
+          <TouchableHighlight style={styles.btnApproved} onPress={this.onApprove}>
               <Fontawesome style={{color: '#FFFFFF'}}>{Icons.check}</Fontawesome>
           </TouchableHighlight>
-          <TouchableHighlight style={styles.btnDenied}>
+          <TouchableHighlight style={styles.btnDenied} onPress={this.onDeny}>
               <Fontawesome style={{color: '#FFFFFF'}}>{Icons.times}</Fontawesome>
           </TouchableHighlight>
         </View>
@@ -24,6 +59,19 @@ export default class RequestItem extends Component {
     )
   }
 }
+
+RequestItem.propTypes = {
+  request: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  request: state.request,
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, {})(RequestItem);
+
 
 const styles = StyleSheet.create({
   container: {
