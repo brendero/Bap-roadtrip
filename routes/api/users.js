@@ -88,4 +88,33 @@ router.post('/login', (req, res) => {
     })
 })
 
+// Get User by id
+// Access: Private
+router.get('/:id', passport.authenticate('jwt', { session: false }), (req, res ) => {
+  User.findById(req.params.id)
+    .then(user => {
+      const User = {
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar
+      }
+      res.json(User);
+    })
+    .catch(err => res.status(404).json(err))
+});
+
+// Update user
+// Access: Private
+router.post('/update', passport.authenticate('jwt', {session: false }), (req, res) => {
+  User.findById(req.user.id)
+    .then(user => {
+      if(user) {
+        User.findByIdAndUpdate(user.id, {$set: req.body}, {new: true})
+          .then(user => res.json(user))
+          .catch(err => res.status(404).json({success:false}))
+      }
+    })
+    .catch(err => res.status(404).json(err))
+})
+
 module.exports = router;

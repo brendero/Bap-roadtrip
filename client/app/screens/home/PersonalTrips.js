@@ -4,8 +4,12 @@ import TripItem from '../../components/Trips/TripItem';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getTrips } from '../../actions/tripActions';
+import { colors } from '../../config/styles';
 
 class PersonalTrips extends Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
     this.props.getTrips();
   }
@@ -18,8 +22,8 @@ class PersonalTrips extends Component {
       {trips && JSON.stringify(trips) != "{}" ? trips.map(({ _id, name, location, collaborators, archived }) => (
           archived ? 
           null :
-          // Add onpress event onPress={() => {navigate('DetailPage', {Trip: _id})}} tht actually works
-          <TripItem name={name} location={location.addres} membersCount={collaborators.length} id={_id} key={_id}></TripItem>          
+          // TODO: make Navigation happen on a full page 
+          <TripItem onPress={() => navigate('DetailPage', {Trip: _id})} name={name} location={location.addres} membersCount={collaborators.length} id={_id} key={_id}></TripItem>          
         )) : <Text>No trips yet for this user</Text>}
       </ScrollView>
     )
@@ -41,6 +45,6 @@ export default connect(mapStateToProps, {getTrips})(PersonalTrips);
 
 const styles = StyleSheet.create({
   tripWrapper: {
-    height: '100%'
+    height: '100%',
   }
 })

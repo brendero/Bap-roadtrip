@@ -38,11 +38,13 @@ class TripItem extends Component {
   onDelete() {
     this.props.deleteTrip(this.props.id);
   }
-  render() {
+  render() {    
     return (
       <View style={[styles.mainWrapper, this.state.btnToggle ? styles.btnShow : '']}>
       <GestureRecognizer onSwipeLeft={() => this.openButtons()} onSwipeRight={() => this.closeButtons()}>
-      <Animated.View style={styles.container} >
+      <TouchableOpacity onPress={this.props.onPress}>
+      <Animated.View style={styles.container}>
+      {/* TODO: Decide if thumbnails are going to be added or removed? */}
           <Image source={require('../../assets/fog-foggy-forest-4827.jpg')} style={styles.tripThumbnail}></Image>
           <View style={styles.infoWrapper}>
               <Text style={styles.tripName}>{this.props.name}</Text>
@@ -53,6 +55,7 @@ class TripItem extends Component {
             <Fontawesome style={styles.memberIcon}>{Icons.userO}</Fontawesome>
           </View>
       </Animated.View>
+      </TouchableOpacity>
       </GestureRecognizer>
       <Animated.View style={[styles.btnWrapper, this.state.btnToggle ? styles.openBtn : styles.closedBtn]}>
         <TouchableOpacity style={styles.archiveBtn} onPress={this.onArchive}>

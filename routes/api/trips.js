@@ -50,6 +50,20 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
     })
     .catch(err => res.json(err));
 })
+// DESC: Get a trip By id
+// Access: Private
+router.get('/:id', passport.authenticate('jwt', { session: false }), (req, res ) => {
+  Trip.findById(req.params.id)
+    .then(tripData => {
+      const trip = {
+        name: tripData.name,
+        adress: tripData.location.addres,
+        createdAt: tripData.createdAt
+      }
+      res.json(trip);
+    })
+    .catch(err => res.status(404).json(err))
+})
 
 // DESC: Delete a trip
 // Access: Private

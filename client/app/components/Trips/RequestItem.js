@@ -3,6 +3,7 @@ import { Text, View, Image, TouchableHighlight, StyleSheet } from 'react-native'
 import Fontawesome, { Icons } from 'react-native-fontawesome';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 class RequestItem extends Component {
   constructor(props) {
@@ -12,16 +13,33 @@ class RequestItem extends Component {
       user: '',
       trip: ''
     }
+
     this.onApprove = this.onApprove.bind(this);
     this.onDeny = this.onDeny.bind(this);
   }
+  componentDidMount() {
+    this.getTripById();
+    this.getUserById();
+  }
   // make a function that gets trips name from id
   getTripById() {
-
+    axios.get(`http://192.168.1.42:5000/api/trips/${this.props.trip}`)
+      .then(res => {
+        this.setState({
+          trip: res.data
+        })
+      })
+      .catch(err => console.log(err))
   }
-  // make a functiokn that gets requestingUsers name from id
+  // make a function that gets requestingUsers name from id
   getUserById() {
-
+    axios.get(`http://192.168.1.42:5000/api/users/${this.props.requesterId}`)
+      .then(res => {
+        this.setState({
+          user: res.data
+        })
+      })
+      .catch(err => console.log(err))
   }
   onApprove() {
     const updatedRequest = {
@@ -44,8 +62,8 @@ class RequestItem extends Component {
       <View style={styles.container}>
         <Image source={require('../../assets/forest-haze-hd-wallpaper-39811.jpg')} style={styles.tripThumbnail}></Image>
         <View style={styles.infoWrapper}>
-          <Text style={styles.userName}>{this.props.adminName}</Text>
-          <Text style={styles.tripName}>{this.props.tripName}</Text>
+          <Text style={styles.userName}>{this.state.user.name}</Text>
+          <Text style={styles.tripName}>{this.state.trip.name}</Text>
         </View>
         <View style={styles.btnWrapper}> 
           <TouchableHighlight style={styles.btnApproved} onPress={this.onApprove}>

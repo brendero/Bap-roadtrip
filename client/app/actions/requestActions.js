@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { GET_REQUEST, GET_ERRORS, ADD_REQUEST, REQUESTS_LOADING } from './types';
-
+import { GET_REQUEST, GET_ERRORS, ADD_REQUEST, REQUESTS_LOADING, GET_REQUEST_TRIP, GET_REQUEST_USER } from './types';
 
 export const getRequests = () => dispatch => {
   dispatch(setRequestsLoading());

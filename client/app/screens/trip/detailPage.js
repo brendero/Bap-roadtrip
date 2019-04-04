@@ -4,20 +4,23 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 export class detailPage extends Component {
+  constructor(props) {
+    super(props); 
+  }
   componentDidMount() {
     console.log(this.props.navigation.state.params.Trip);
   }
   render() {
     return (
       <View>
-        <Text> prop </Text>
+        <Text> {this.props.navigation.state.params.Trip} </Text>
       </View>
     )
   }
 }
 
 detailPage.propTypes = {
-  prop: PropTypes
+  
 }
 
 const mapStateToProps = (state) => ({

@@ -15,7 +15,6 @@ class Requests extends Component {
   render() {
     const { requests } = this.props.request;
 
-    console.log(this.props.request);
     return (
       <ScrollView style={styles.container}>
         {requests && JSON.stringify(requests) != "{}" ? requests.map(({ _id, requestingUserId, tripId }) => (

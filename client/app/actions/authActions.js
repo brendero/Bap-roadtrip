@@ -1,4 +1,4 @@
-import { GET_ERRORS, SET_CURRENT_USER } from './types';
+import { GET_ERRORS, SET_CURRENT_USER, UPDATE_USER_AVATAR } from './types';
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import setAuthToken from '../utils/setAuthToken';
@@ -41,6 +41,18 @@ export const logoutUser = () => dispatch => {
   setAuthToken(false);
   
   dispatch(setCurrentUser({}));
+}
+
+export const updateUserAvatar = (user) => dispatch => {
+  axios.post('http://192.168.1.42:5000/api/users/update', user)
+    .then(res => dispatch({
+      type: UPDATE_USER_AVATAR,
+      payload: res.data
+    }))
+    .catch(err => dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data
+    }))
 }
 
 export const setCurrentUser = (decoded) => {

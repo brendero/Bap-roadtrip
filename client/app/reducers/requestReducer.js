@@ -1,4 +1,4 @@
-import { REQUESTS_LOADING, GET_REQUEST, ADD_REQUEST } from "../actions/types";
+import { REQUESTS_LOADING, GET_REQUEST, ADD_REQUEST, GET_REQUEST_TRIP, GET_REQUEST_USER } from "../actions/types";
 
 const initialState = {
   isLoading: false,
