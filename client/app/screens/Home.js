@@ -7,7 +7,8 @@ import {
   Text,
   Modal,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput
 } from 'react-native';
 import { createMaterialTopTabNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
 import detailPage from './trip/detailPage';
@@ -88,7 +89,7 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      modalVisible: true
+      modalVisible: false
     }
     this.Logout = this.Logout.bind(this);
     this.checkPermission = this.checkPermission.bind(this);
@@ -177,8 +178,27 @@ class Home extends Component {
           }}>
           <View style={modal.container}>
             <View style={modal.wrapper}>
-              <Text>Hello World!</Text>
-
+              <View style={modal.titleWrapper}>
+                <Text style={modal.title}>Your new trip</Text>
+                <Image source={require('../assets/Logo.png')} style={{width: 50, height: 50}}></Image>
+              </View>
+              <View style={{margin: 10}}>
+                <Text>Name</Text>
+                <TextInput
+                style={modal.nameInput}
+                value={this.state.tripName}
+                maxLength={40}
+                onChangeText={value => {
+                  this.setState({
+                    tripName: value
+                  })
+                }}
+                />
+              </View>
+              <View>
+                <Text style={{marginLeft: 10}}>Destination</Text>
+                {/* Add Map */}
+              </View>
               <TouchableHighlight onPress={this.toggleModal}>
                 <Text>Hide Modal</Text>
               </TouchableHighlight>
@@ -265,10 +285,28 @@ const modal = StyleSheet.create({
     justifyContent: 'center'
   }, 
   wrapper: {
-    backgroundColor: colors.secondaryLight,
+    backgroundColor: 'white',
     width: '80%',
     height: '90%',
-
+    elevation: 3
+  },
+  titleWrapper: {
+    backgroundColor: colors.secondaryDark,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 15
+  },
+  title: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontFamily: 'roboto',
+    fontSize: 20
+  },
+  nameInput: {
+    backgroundColor: 'lightgrey',
+    borderRadius: 5,
+    padding: 0,
+    marginTop: 3
   }
-
 })

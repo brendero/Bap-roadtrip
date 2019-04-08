@@ -1,4 +1,4 @@
-import { REQUESTS_LOADING, GET_REQUEST, ADD_REQUEST, GET_REQUEST_TRIP, GET_REQUEST_USER } from "../actions/types";
+import { REQUESTS_LOADING, GET_REQUEST, ADD_REQUEST, DELETE_REQUEST } from "../actions/types";
 
 const initialState = {
   isLoading: false,
@@ -22,6 +22,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         requests: [action.payload, ...state.requests]
+      }
+    case DELETE_REQUEST:
+      return {
+        ...state,
+        requests: state.requests.filter(request => request._id !== action.payload)
       }
     default:
       return state;

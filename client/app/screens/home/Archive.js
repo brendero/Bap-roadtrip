@@ -12,7 +12,7 @@ class Archive extends Component {
       <ScrollView style={{height: '100%'}}>
         {trips && JSON.stringify(trips) != "{}" ? trips.map(({ _id, name, location, collaborators, archived }) => (
             !archived ? null : <ArchiveItem name={name} location={location.addres} membersCount={collaborators.length} id={_id} key={_id}></ArchiveItem>      
-          )) : <Text>No trips yet for this user</Text>}
+          )) : <Text>No archive yet for this user</Text>}
       </ScrollView>
     )
   }

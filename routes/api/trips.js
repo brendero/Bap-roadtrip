@@ -58,6 +58,7 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), (req, res )
       const trip = {
         name: tripData.name,
         adress: tripData.location.addres,
+        collaborators: tripData.collaborators,
         createdAt: tripData.createdAt
       }
       res.json(trip);

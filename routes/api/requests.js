@@ -45,4 +45,19 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
     .catch(err => res.json(err));
 })
 
+// Access: Private 
+// DESC: Delete a request
+router.delete('/:id', passport.authenticate('jwt', {session: false}), (req,res) => {
+  Request.findById(req.params.id)
+      .then(request => {
+        if(req.user.id == request.invitedUserId) {
+          request.remove().then(() => res.json({succes: true}))
+        } else {
+          res.status(401).json('unauthorized')
+        }
+      })
+      .catch(err => res.status(404).json({succes: false}));
+});
+
+
 module.exports = router;

@@ -18,8 +18,8 @@ class Requests extends Component {
     return (
       <ScrollView style={styles.container}>
         {requests && JSON.stringify(requests) != "{}" ? requests.map(({ _id, requestingUserId, tripId }) => (
-          <RequestItem key={_id} requesterId={requestingUserId} trip={tripId}></RequestItem>          
-        )) : <Text>No Requests yet for this user</Text>}
+          <RequestItem id={_id} key={_id} requesterId={requestingUserId} trip={tripId}></RequestItem>          
+        )) : <Text>No requests yet for this user</Text>}
       </ScrollView>
     )
   }

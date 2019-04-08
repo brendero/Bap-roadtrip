@@ -4,6 +4,8 @@ import Fontawesome, { Icons } from 'react-native-fontawesome';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { deleteRequest, updateRequest } from '../../actions/requestActions';
+import { updateTripCollaborators } from '../../actions/tripActions';
 
 class RequestItem extends Component {
   constructor(props) {
@@ -42,22 +44,26 @@ class RequestItem extends Component {
       .catch(err => console.log(err))
   }
   onApprove() {
-    const updatedRequest = {
-      id: this.props.id,
-      status: true
+    const collaboratorsArray = this.state.trip.collaborators;
+
+    if(collaboratorsArray.includes(this.props.auth.user.id) === false) {
+      collaboratorsArray.push(this.props.auth.user.id);
     }
-    this.props.updateRequest(updatedRequest);
+    
     const updatedTrip = {
-      id: this.props.id,
-      //collaborator
+      id: this.props.trip,
+      collaborators: collaboratorsArray
     }
 
-    this.props.updateTrip(updatedTrip);
+    this.props.updateTripCollaborators(updatedTrip);
+    this.props.deleteRequest(this.props.id);
   }
   onDeny() {
-    this.props.deleteRequest();
+    console.log(this.props.id)
+    this.props.deleteRequest(this.props.id);
   }
   render() {
+    console.log(this.state.trip);
     return (
       <View style={styles.container}>
         <Image source={require('../../assets/forest-haze-hd-wallpaper-39811.jpg')} style={styles.tripThumbnail}></Image>
@@ -80,7 +86,9 @@ class RequestItem extends Component {
 
 RequestItem.propTypes = {
   request: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  deleteRequest: PropTypes.func.isRequired,
+  updateTripCollaborators: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -88,7 +96,7 @@ const mapStateToProps = (state) => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps, {})(RequestItem);
+export default connect(mapStateToProps, {deleteRequest, updateTripCollaborators})(RequestItem);
 
 
 const styles = StyleSheet.create({

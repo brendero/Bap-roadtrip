@@ -4,7 +4,6 @@ import TripItem from '../../components/Trips/TripItem';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getTrips } from '../../actions/tripActions';
-import { colors } from '../../config/styles';
 
 class PersonalTrips extends Component {
   constructor(props) {
