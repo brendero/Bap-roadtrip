@@ -1,30 +1,45 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import BottomCard from '../../components/Trips/Detail/BottomCard';
 
-export class detailPage extends Component {
+class DetailPage extends Component {
   constructor(props) {
     super(props); 
+    
+    this.state = {
+      trip: ''
+    }
   }
   componentDidMount() {
-    console.log(this.props.navigation.state.params.Trip);
+    const { trips } = this.props.trip;
+
+    const tripData = trips.find(trip => trip._id == this.props.navigation.state.params.Trip);
+
+    this.setState({
+      trip: tripData
+    })
   }
   render() {
     return (
-      <View>
-        <Text> {this.props.navigation.state.params.Trip} </Text>
+      <View style={styles.container}>
+        <Text>JWT</Text>
+        <BottomCard tripData={this.state.trip}/>
       </View>
     )
   }
 }
 
-detailPage.propTypes = {
-  
+DetailPage.propTypes = {
+  trip: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
-  
+  trip: state.trip
 })
 
-export default connect(mapStateToProps, {})(detailPage)
+export default connect(mapStateToProps, {})(DetailPage)
+
+const styles = StyleSheet.create({
+})

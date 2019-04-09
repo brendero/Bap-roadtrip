@@ -31,9 +31,13 @@ const tripSchema = new Schema({
     },
   stops: [
     {
-        name :{
+        name: {
           type: String,
           required: true
+        },
+        thumbnail: {
+          type: String,
+          required: false
         },
         location: {
             addres: {

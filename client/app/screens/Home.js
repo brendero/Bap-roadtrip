@@ -10,8 +10,8 @@ import {
   TouchableOpacity,
   TextInput
 } from 'react-native';
-import { createMaterialTopTabNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
-import detailPage from './trip/detailPage';
+import { createMaterialTopTabNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
+import detailPage from './trip/DetailPage';
 import { connect } from 'react-redux';
 import { logoutUser, updateUserAvatar } from '../actions/authActions';
 import PersonalTrips from './home/PersonalTrips';
@@ -68,7 +68,7 @@ const Navigation = createMaterialTopTabNavigator(
     }    
   );
 
-  const detailNavigator = createSwitchNavigator(
+  const detailNavigator = createStackNavigator(
     {
       DetailPage: {
         screen: detailPage
@@ -89,7 +89,8 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      modalVisible: false
+      modalVisible: false,
+      headerVisible: true
     }
     this.Logout = this.Logout.bind(this);
     this.checkPermission = this.checkPermission.bind(this);
@@ -107,6 +108,17 @@ class Home extends Component {
     this.setState({
       modalVisible: !this.state.modalVisible
     })
+  }
+  toggleHeader(navState) {
+    if(navState.index == 1) {
+      this.setState({
+        headerVisible: false
+      })
+    } if(navState.index == 0) {
+      this.setState({
+        headerVisible: true
+      })
+    }
   }
   checkPermission() {
     const granted = PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)
@@ -157,59 +169,67 @@ class Home extends Component {
 
     return (
       <View>
-        <View style={styles.profilePicWrapper}>
-          <ImageBackground source={require('../assets/fog-foggy-forest-4827.jpg')} style={styles.profileBackground}>
-            <TouchableHighlight style={styles.logoutBtn} onPress={this.Logout}><FontAwesome style={styles.logoutIcon}>{Icons.signOut}</FontAwesome></TouchableHighlight>
-            <View>
-              <TouchableOpacity onPress={this.checkPermission}>
-              <Image source={{uri: user.avatar}} style={styles.profilePic}/>
-              <FontAwesome style={{fontSize:20, color: 'white', backgroundColor: colors.secondaryLight, padding: 10, borderRadius: 100, position: 'absolute', bottom: 0, right: 0}}>{Icons.pencil}</FontAwesome>
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.profileName}>{user.name}</Text>
-          </ImageBackground>
-        </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-          }}>
-          <View style={modal.container}>
-            <View style={modal.wrapper}>
-              <View style={modal.titleWrapper}>
-                <Text style={modal.title}>Your new trip</Text>
-                <Image source={require('../assets/Logo.png')} style={{width: 50, height: 50}}></Image>
-              </View>
-              <View style={{margin: 10}}>
-                <Text>Name</Text>
-                <TextInput
-                style={modal.nameInput}
-                value={this.state.tripName}
-                maxLength={40}
-                onChangeText={value => {
-                  this.setState({
-                    tripName: value
-                  })
-                }}
-                />
-              </View>
+        {this.state.headerVisible ? 
+        <View>
+          <View style={styles.profilePicWrapper}>
+            <ImageBackground source={require('../assets/fog-foggy-forest-4827.jpg')} style={styles.profileBackground}>
+              <TouchableHighlight style={styles.logoutBtn} onPress={this.Logout}><FontAwesome style={styles.logoutIcon}>{Icons.signOut}</FontAwesome></TouchableHighlight>
               <View>
-                <Text style={{marginLeft: 10}}>Destination</Text>
-                {/* Add Map */}
+                <TouchableOpacity onPress={this.checkPermission}>
+                <Image source={{uri: user.avatar}} style={styles.profilePic}/>
+                <FontAwesome style={{fontSize:20, color: 'white', backgroundColor: colors.secondaryLight, padding: 10, borderRadius: 100, position: 'absolute', bottom: 0, right: 0}}>{Icons.pencil}</FontAwesome>
+                </TouchableOpacity>
               </View>
-              <TouchableHighlight onPress={this.toggleModal}>
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
-            </View>
+              <Text style={styles.profileName}>{user.name}</Text>
+            </ImageBackground>
           </View>
-        </Modal>        
-        <View style={{height: 447}}>
-          <TripNavigator></TripNavigator>
-          <TouchableOpacity style={styles.addBtn} onPress={this.toggleModal}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <View style={modal.container}>
+              <View style={modal.wrapper}>
+                <View style={modal.titleWrapper}>
+                  <Text style={modal.title}>Your new trip</Text>
+                  <Image source={require('../assets/Logo.png')} style={{width: 50, height: 50}}></Image>
+                </View>
+                <View style={{margin: 10}}>
+                  <Text>Name</Text>
+                  <TextInput
+                  style={modal.nameInput}
+                  value={this.state.tripName}
+                  maxLength={40}
+                  onChangeText={value => {
+                    this.setState({
+                      tripName: value
+                    })
+                  }}
+                  />
+                </View>
+                <View>
+                  <Text style={{marginLeft: 10}}>Destination</Text>
+                  {/* Add Map */}
+                </View>
+                <TouchableHighlight onPress={this.toggleModal}>
+                  <Text>Hide Modal</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>        
+        </View>
+        : null}
+        <View style={[this.state.headerVisible ? styles.navigationContainer : styles.navigationContainer2]}>
+          <TripNavigator 
+            onNavigationStateChange={(prevState, newState) => {
+              this.toggleHeader(newState)
+            }}></TripNavigator>
+
+          {this.state.headerVisible ? <TouchableOpacity style={styles.addBtn} onPress={this.toggleModal}>
             <FontAwesome style={styles.addBtnIcon}>{Icons.plus}</FontAwesome>
-          </TouchableOpacity> 
+          </TouchableOpacity> : null}
         </View>
       </View>
     )
@@ -276,6 +296,12 @@ const styles = StyleSheet.create({
   addBtnIcon: {
     color: 'white',
     fontSize: 20    
+  },
+  navigationContainer: {
+    height: 447
+  },
+  navigationContainer2: {
+    height: '100%'
   }
 });
 
@@ -286,8 +312,8 @@ const modal = StyleSheet.create({
   }, 
   wrapper: {
     backgroundColor: 'white',
-    width: '80%',
-    height: '90%',
+    width: '90%',
+    height: '80%',
     elevation: 3
   },
   titleWrapper: {
