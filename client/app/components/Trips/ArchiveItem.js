@@ -46,7 +46,6 @@ class ArchiveItem extends Component {
       <GestureRecognizer onSwipeLeft={() => this.openButtons()} onSwipeRight={() => this.closeButtons()}>
       {/* Add onPress event to View */}
       <Animated.View style={styles.container} >
-          <Image source={require('../../assets/fog-foggy-forest-4827.jpg')} style={styles.tripThumbnail}></Image>
           <View style={styles.infoWrapper}>
               <Text style={styles.tripName}>{this.props.name}</Text>
               <Text style={styles.tripDestination}>{this.props.location}</Text>

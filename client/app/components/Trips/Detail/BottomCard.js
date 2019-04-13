@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableHighlight, Animated, StyleSheet } from 'react-native'
+import { View, TouchableHighlight, Animated, StyleSheet } from 'react-native'
 import { height } from '../../../config/styles'
 import GestureRecognizer from "react-native-swipe-gestures"
 import OptionsHeader from './Header'
@@ -10,14 +10,14 @@ export default class BottomCard extends Component {
     super(props);
     this.state = {
       duration: 200,
-      offset: height + 500,
-      bottom: new Animated.Value(-(height + 500))
+      offset: height - 150,
+      bottom: new Animated.Value(-(height - 150))
     };
   }
   openOptions() {
     this.setState({ open: true });
     Animated.timing(this.state.bottom, {
-      toValue: -700,
+      toValue: -20,
       duration: this.state.duration
     }).start();
   }
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: "100%",
     elevation: 3,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   options: {
     backgroundColor: 'white',

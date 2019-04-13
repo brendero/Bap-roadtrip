@@ -8,7 +8,7 @@ export default class OptionsBody extends Component {
   render() {
     return (
       <View>
-        <View style={styles.itemWrapper}>
+        <View style={styles.itemWrapper} >
           <Text>Members</Text>
           <MembersView members={this.props.trip.collaborators}/>
         </View>

@@ -44,8 +44,6 @@ class TripItem extends Component {
       <GestureRecognizer onSwipeLeft={() => this.openButtons()} onSwipeRight={() => this.closeButtons()}>
       <TouchableOpacity onPress={this.props.onPress}>
       <Animated.View style={styles.container}>
-      {/* TODO: Decide if thumbnails are going to be added or removed? */}
-          <Image source={require('../../assets/fog-foggy-forest-4827.jpg')} style={styles.tripThumbnail}></Image>
           <View style={styles.infoWrapper}>
               <Text style={styles.tripName}>{this.props.name}</Text>
               <Text style={styles.tripDestination}>{this.props.location}</Text>

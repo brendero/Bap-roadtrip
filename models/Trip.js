@@ -65,6 +65,10 @@ const tripSchema = new Schema({
          type: Number,
          required: true
        },
+       photo: {
+         type: String,
+         required: true
+       },
        from: {
          type: Date,
          required: true

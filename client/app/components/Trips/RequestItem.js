@@ -66,7 +66,6 @@ class RequestItem extends Component {
     console.log(this.state.trip);
     return (
       <View style={styles.container}>
-        <Image source={require('../../assets/forest-haze-hd-wallpaper-39811.jpg')} style={styles.tripThumbnail}></Image>
         <View style={styles.infoWrapper}>
           <Text style={styles.userName}>{this.state.user.name}</Text>
           <Text style={styles.tripName}>{this.state.trip.name}</Text>
