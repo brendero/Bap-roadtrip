@@ -46,7 +46,7 @@ export default class BottomCard extends Component {
               <OptionsHeader name={this.props.tripData.name}/>
             </GestureRecognizer>
           </TouchableHighlight>
-
+          
           <OptionsBody trip={this.props.tripData} style={{ paddingBottom: 200 }} />
         </View>
       </Animated.View>

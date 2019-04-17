@@ -14,7 +14,7 @@ export class Messages extends Component {
 }
 
 Messages.propTypes = {
-
+  
 }
 
 const mapStateToProps = (state) => ({

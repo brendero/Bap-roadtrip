@@ -12,20 +12,12 @@ export default class LocationsView extends Component {
             <View style={styles.stopWrapper}>
               <Image source={{uri: thumbnail}} style={styles.stopImage}/>
               <View>
-                <Text style={{fontWeight: 'bold'}}>{ name }</Text>
-                <Text>{ location.addres }</Text>
+                <Text style={{fontWeight: 'bold', color: 'black', fontSize: 12}}>{ name }</Text>
+                <Text style={{color: 'black', fontSize: 12}}>{ location.addres }</Text>
               </View>
             </View>
-          )) : null}
-            <View style={styles.stopWrapper}>
-              <View>
-                <Image source={{uri: 'https://stad.gent/sites/default/files/styles/sidebar_full_width/public/page/images/Gent%20Sint%20Pietersstation%20%285%29.jpg?itok=0taZfsk1'}} style={styles.stopImage}/>
-              </View>
-              <View style={styles.infoWrapper}>
-                <Text style={{fontWeight: 'bold', color:'black', fontSize: 12}}>Gent sint-pieters</Text>
-                <Text style={{color: 'black', fontSize: 12}}>Sint-pieterslaan 92</Text>
-              </View>
-            </View>
+          )) : <View style={{width: 170, height: 170, backgroundColor: 'lightgrey'}}></View>}
+
         </ScrollView>
       </View>
     )
@@ -34,16 +26,13 @@ export default class LocationsView extends Component {
 
 const styles = StyleSheet.create({
   stopWrapper: {
-    width: 160,
-    height: 160,
+    width: 170,
+    height: 170,
     flexDirection: 'column',
     justifyContent: 'space-between',
     flex: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 2 
+    elevation: 50,
+    margin: 0
   },
   stopImage: {
     width: '100%',
@@ -55,6 +44,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     padding: 10,
     backgroundColor: 'white',
-    width: '100%'
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#d6d7da'
   }
 })

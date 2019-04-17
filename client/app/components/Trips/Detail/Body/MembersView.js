@@ -12,13 +12,13 @@ export default class MembersView extends Component {
     }
     this.doIt = this.doIt.bind(this);
   }
-  // componentWillMount() {
-  //   setTimeout(() => {
-  //     this.doIt()
-  //   }, 400);
-  // }
+  componentWillMount() {
+    setTimeout(() => {
+      this.doIt()
+    }, 400);
+  }
   getUserInfoById(id) {
-    axios.get(`http://192.168.1.42:5000/api/users/${id}`)
+    axios.get(`http://10.0.2.2:5000/api/users/${id}`)
     .then(res => {
       this.setState({
         users: [res.data, ...this.state.users]
@@ -28,10 +28,12 @@ export default class MembersView extends Component {
   }
   doIt() {
     const membersArray = this.props.members;
-
-    membersArray.forEach(user => {
-      this.getUserInfoById(user)
-    });
+    console.log(membersArray);
+    if(membersArray !== undefined) {
+      membersArray.forEach(user => {
+        this.getUserInfoById(user)
+      });
+    }
   }
   render() {
     const { users } = this.state;

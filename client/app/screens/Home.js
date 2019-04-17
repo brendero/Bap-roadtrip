@@ -17,6 +17,7 @@ import { logoutUser, updateUserAvatar } from '../actions/authActions';
 import PersonalTrips from './home/PersonalTrips';
 import Requests from './home/Requests';
 import Archive from './home/Archive';
+import Messages from './trip/Messages';
 import FontAwesome, {Icons } from 'react-native-fontawesome';
 import { colors } from '../config/styles';
 import PropTypes from 'prop-types';
@@ -68,10 +69,20 @@ const Navigation = createMaterialTopTabNavigator(
     }    
   );
 
+  const messageNavigator = createStackNavigator(
+    {
+      MessageScreen: {
+        screen: Messages
+      }
+    }
+  )
   const detailNavigator = createStackNavigator(
     {
       DetailPage: {
         screen: detailPage
+      },
+      messageScreen: {
+        screen: messageNavigator
       },
       barNavigator: {
         screen: Navigation

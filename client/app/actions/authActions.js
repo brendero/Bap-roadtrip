@@ -7,7 +7,7 @@ import jwt_decode from 'jwt-decode';
 // Register User
 export const registerUser = userData => dispatch => {
   axios
-    .post('http://192.168.1.42:5000/api/users/register', userData)
+    .post('http://10.0.2.2:5000/api/users/register', userData)
     .then(res => console.log(res.data))
     .catch(err => dispatch({
       type: GET_ERRORS,
@@ -17,7 +17,7 @@ export const registerUser = userData => dispatch => {
 
 export const loginUser = userData => dispatch => {
   axios
-    .post('http://192.168.1.42:5000/api/users/login', userData)
+    .post('http://10.0.2.2:5000/api/users/login', userData)
     .then(res => {
       const { token } = res.data;
 
@@ -29,10 +29,11 @@ export const loginUser = userData => dispatch => {
 
       dispatch(setCurrentUser(decoded));
     })
-    .catch(err => dispatch({
-      type: GET_ERRORS,
-      payload: err.response.data
-    }));
+    .catch(err => console.log(err))
+    // .catch(err => dispatch({
+    //   type: GET_ERRORS,
+    //   payload: err.response
+    // }));
 };
 
 export const logoutUser = () => dispatch => {
@@ -44,7 +45,7 @@ export const logoutUser = () => dispatch => {
 }
 
 export const updateUserAvatar = (user) => dispatch => {
-  axios.post('http://192.168.1.42:5000/api/users/update', user)
+  axios.post('http://10.0.2.2:5000/api/users/update', user)
     .then(res => dispatch({
       type: UPDATE_USER_AVATAR,
       payload: res.data

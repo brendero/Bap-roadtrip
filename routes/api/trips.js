@@ -40,7 +40,8 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
             addres: req.body.location.addres,
             lat: req.body.location.lattitude,
             lng: req.body.location.longitude 
-          }
+          },
+          messages: req.body.messageId
         })
       
         newTrip.save()

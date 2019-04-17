@@ -3,7 +3,7 @@ import { GET_ERRORS, GET_TRIPS, TRIPS_LOADING, DELETE_TRIP, ADD_TRIP, UPDATE_TRI
 
 export const getTrips = () => dispatch => {
   dispatch(setTripsLoading());
-  axios.get('http://192.168.1.42:5000/api/trips')
+  axios.get('http://10.0.2.2:5000/api/trips')
     .then(res => dispatch({
       type: GET_TRIPS,
       payload: res.data
@@ -15,7 +15,7 @@ export const getTrips = () => dispatch => {
 }
 
 export const addTrip = (trip) => dispatch => {
-  axios.post('http://192.168.1.42:5000/api/trips', trip)
+  axios.post('http://10.0.2.2:5000/api/trips', trip)
     .then(res => dispatch({
       type: ADD_TRIP,
       payload: res.data
@@ -28,7 +28,7 @@ export const addTrip = (trip) => dispatch => {
 }
 
 export const updateTrip = (trip) => dispatch => {
-  axios.post('http://192.168.1.42:5000/api/trips', trip)
+  axios.post('http://10.0.2.2:5000/api/trips', trip)
     .then(res => dispatch({
       type: UPDATE_TRIP,
       payload: res.data
@@ -37,7 +37,7 @@ export const updateTrip = (trip) => dispatch => {
 }
 
 export const updateTripCollaborators = (trip) => dispatch => {
-  axios.post('http://192.168.1.42:5000/api/trips', trip)
+  axios.post('http://10.0.2.2:5000/api/trips', trip)
     .then(
       setTimeout(() => {
         dispatch(getTrips())
@@ -46,7 +46,7 @@ export const updateTripCollaborators = (trip) => dispatch => {
 }
 
 export const deleteTrip = (id) => dispatch => {
-  axios.delete(`http://192.168.1.42:5000/api/trips/${id}`)
+  axios.delete(`http://10.0.2.2:5000/api/trips/${id}`)
   .then(res => 
       dispatch({
           type: DELETE_TRIP,

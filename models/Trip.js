@@ -105,6 +105,11 @@ const tripSchema = new Schema({
     type: Boolean,
     default: false,
     required: true
+  },
+  messageRef: {
+    type: Schema.Types.ObjectId,
+    ref: 'Message',
+    required: true
   }
   // Add more data
    // Add messages

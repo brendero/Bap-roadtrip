@@ -3,7 +3,7 @@ import { GET_REQUEST, GET_ERRORS, ADD_REQUEST, REQUESTS_LOADING, DELETE_REQUEST 
 
 export const getRequests = () => dispatch => {
   dispatch(setRequestsLoading());
-  axios.get('http://192.168.1.42:5000/api/requests')
+  axios.get('http://10.0.2.2:5000/api/requests')
     .then(res => dispatch({
       type: GET_REQUEST,
       payload: res.data
@@ -15,7 +15,7 @@ export const getRequests = () => dispatch => {
 }
 
 export const addRequest = (request) => dispatch => {
-  axios.post('http://192.168.1.42:5000/api/requests', request)
+  axios.post('http://10.0.2.2:5000/api/requests', request)
     .then(res => dispatch({
       type: ADD_REQUEST,
       payload: res.data
@@ -27,7 +27,7 @@ export const addRequest = (request) => dispatch => {
 }
 
 export const deleteRequest = (id) => dispatch => {
-  axios.delete(`http://192.168.1.42:5000/api/requests/${id}`)
+  axios.delete(`http://10.0.2.2:5000/api/requests/${id}`)
     .then(res => dispatch({
       type: DELETE_REQUEST,
       payload: id

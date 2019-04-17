@@ -25,7 +25,7 @@ class RequestItem extends Component {
   }
   // make a function that gets trips name from id
   getTripById() {
-    axios.get(`http://192.168.1.42:5000/api/trips/${this.props.trip}`)
+    axios.get(`http://10.0.2.2:5000/api/trips/${this.props.trip}`)
       .then(res => {
         this.setState({
           trip: res.data
@@ -35,7 +35,7 @@ class RequestItem extends Component {
   }
   // make a function that gets requestingUsers name from id
   getUserById() {
-    axios.get(`http://192.168.1.42:5000/api/users/${this.props.requesterId}`)
+    axios.get(`http://10.0.2.2:5000/api/users/${this.props.requesterId}`)
       .then(res => {
         this.setState({
           user: res.data

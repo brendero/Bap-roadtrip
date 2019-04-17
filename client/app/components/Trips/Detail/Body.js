@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, ScrollView } from 'react-native'
 import MembersView from './Body/MembersView'
 import LocationsView from './Body/LocationsView'
 import BookingsView from './Body/BookingsView'
@@ -7,7 +7,7 @@ import BookingsView from './Body/BookingsView'
 export default class OptionsBody extends Component {
   render() {
     return (
-      <View>
+      <ScrollView>
         <View style={styles.itemWrapper} >
           <Text>Members</Text>
           <MembersView members={this.props.trip.collaborators}/>
@@ -20,7 +20,7 @@ export default class OptionsBody extends Component {
           <Text>Bookings</Text>
           <BookingsView bookings={this.props.trip.bookings}/>
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
