@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, StyleSheet, Image } from 'react-native'
-import { colors } from '../../../../config/styles';
+import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 export default class LocationsView extends Component {
   render() {
@@ -16,8 +16,10 @@ export default class LocationsView extends Component {
                 <Text style={{color: 'black', fontSize: 12}}>{ location.addres }</Text>
               </View>
             </View>
-          )) : <View style={{width: 170, height: 170, backgroundColor: 'lightgrey'}}></View>}
-
+          )) : null}
+          <TouchableOpacity style={{width: 170, height: 170, backgroundColor: 'lightgrey', justifyContent: 'center', alignItems: 'center'}}>
+            <FontAwesome style={{color: 'white', fontSize: 20}}>{Icons.plus}</FontAwesome>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     )

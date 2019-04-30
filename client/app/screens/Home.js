@@ -14,6 +14,7 @@ import { createMaterialTopTabNavigator, createStackNavigator, createAppContainer
 import detailPage from './trip/DetailPage';
 import { connect } from 'react-redux';
 import { logoutUser, updateUserAvatar } from '../actions/authActions';
+import { addTrip } from '../actions/tripActions';
 import PersonalTrips from './home/PersonalTrips';
 import Requests from './home/Requests';
 import Archive from './home/Archive';
@@ -24,6 +25,8 @@ import PropTypes from 'prop-types';
 import { PermissionsAndroid } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import cloudinaryUpload from '../utils/cloudinary';
+import MapboxGL from '@mapbox/react-native-mapbox-gl';
+import axios from 'axios';
 
 const Navigation = createMaterialTopTabNavigator(
   {
@@ -72,7 +75,10 @@ const Navigation = createMaterialTopTabNavigator(
   const messageNavigator = createStackNavigator(
     {
       MessageScreen: {
-        screen: Messages
+        screen: Messages,
+        navigationoptions: {
+          title: 'Messages'
+        }
       }
     }
   )
@@ -94,6 +100,14 @@ const Navigation = createMaterialTopTabNavigator(
     }
   );
 
+const YOUR_ACCES_TOKEN = "pk.eyJ1IjoiYnJvbnQyIiwiYSI6ImNqdWI4dm1teTA4eXk0M21oOTBuMmM2NGIifQ._07g-0VCeZ7jadmmxRE64g";
+
+MapboxGL.setAccessToken(YOUR_ACCES_TOKEN);
+
+const columbusCircleCoordinates = [
+  4.137480, 51.098190
+];
+
 const TripNavigator = createAppContainer(detailNavigator);
 class Home extends Component {
   constructor(props) {
@@ -101,11 +115,15 @@ class Home extends Component {
 
     this.state = {
       modalVisible: false,
-      headerVisible: true
+      headerVisible: true,
+      userLocation: columbusCircleCoordinates,
+      destination: '',
+      newTripName: ''
     }
     this.Logout = this.Logout.bind(this);
     this.checkPermission = this.checkPermission.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.addNewTrip = this.addNewTrip.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     if(!nextProps.auth.isAuthenticated) {
@@ -130,6 +148,49 @@ class Home extends Component {
         headerVisible: true
       })
     }
+  }
+  addNewTrip() {
+      if(this.state.destination !== '' || this.state.newTripName !== '') {
+          axios.post('http://10.0.2.2:5000/api/messages')
+          .then(res => {
+              const locationData = {
+                  // TODO: make adress dynamic
+                  addres: "TestAdress",
+                  lattitude: this.state.destination['1'],
+                  longitude: this.state.destination['0'] 
+                }
+            
+                const newTripData = {
+                    name: this.state.newTripName,
+                    location : locationData,
+                    messageRef: res.data
+                }  
+              this.props.addTrip(newTripData);
+          })
+      }
+  }
+  getGeoLocation() {
+    const granted = PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+    granted.then(res => {
+      if(res === PermissionsAndroid.RESULTS.GRANTED) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userCoords = [position.coords.longitude, position.coords.latitude]
+    
+            this.setState({
+              userLocation: userCoords
+            })
+          },
+          (err) => console.log(err),
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+      }
+      else {
+        alert(`can't get your location`)
+      }
+    }
+    )
+    .catch(err => console.log(err))
   }
   checkPermission() {
     const granted = PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)
@@ -156,7 +217,6 @@ class Home extends Component {
 
               cloudinaryUpload(source)
               .then(res => {
-                // use res.data.secure_url to update avatar
                 const newUserData = {
                   avatar: res.data.secure_url
                 }
@@ -204,6 +264,7 @@ class Home extends Component {
             <View style={modal.container}>
               <View style={modal.wrapper}>
                 <View style={modal.titleWrapper}>
+                  <TouchableOpacity onPress={this.toggleModal}><FontAwesome style={{color: 'white', fontSize: 20}}>{Icons.times}</FontAwesome></TouchableOpacity>
                   <Text style={modal.title}>Your new trip</Text>
                   <Image source={require('../assets/Logo.png')} style={{width: 50, height: 50}}></Image>
                 </View>
@@ -220,12 +281,31 @@ class Home extends Component {
                   }}
                   />
                 </View>
-                <View>
+                <View style={{flex:1}}>
                   <Text style={{marginLeft: 10}}>Destination</Text>
                   {/* Add Map */}
+                  <MapboxGL.MapView
+                    ref={(c) => this._map = c}
+                    style={{flex: 1}}
+                    zoomLevel={13}
+                    centerCoordinate={this.state.userLocation}
+                    onPress={(event) => {
+                      console.log(event.geometry.coordinates);
+                      this.setState({ destination: event.geometry.coordinates})
+                    }}
+                    styleURL={ MapboxGL.StyleURL.TrafficDay }>
+                    { this.state.destination ? 
+                      <MapboxGL.PointAnnotation 
+                        key="key1"
+                        id='ùldkjms'
+                        title="end Destination"
+                        coordinate={this.state.destination}
+                      ></MapboxGL.PointAnnotation>
+                      : null }
+                  </MapboxGL.MapView>
                 </View>
-                <TouchableHighlight onPress={this.toggleModal}>
-                  <Text>Hide Modal</Text>
+                <TouchableHighlight onPress={this.addNewTrip} style={{backgroundColor: colors.secondaryDark, padding: 10, borderRadius: 50,position: 'absolute', bottom: 10, right: 10}}>
+                  <Text style={{color: 'white'}}><FontAwesome style={{paddingRight: 30}}>{Icons.paperPlane}</FontAwesome>Submit</Text>
                 </TouchableHighlight>
               </View>
             </View>
@@ -257,7 +337,7 @@ const mapStateToProps = (state) => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps, {logoutUser, updateUserAvatar})(Home);
+export default connect(mapStateToProps, {logoutUser, updateUserAvatar, addTrip})(Home);
 
 const styles = StyleSheet.create({
   profilePicWrapper : {

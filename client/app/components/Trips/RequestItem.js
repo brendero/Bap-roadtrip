@@ -35,7 +35,7 @@ class RequestItem extends Component {
   }
   // make a function that gets requestingUsers name from id
   getUserById() {
-    axios.get(`http://10.0.2.2:5000/api/users/${this.props.requesterId}`)
+    axios.get(`http://10.0.2.2:5000/api/users/detail/${this.props.requesterId}`)
       .then(res => {
         this.setState({
           user: res.data
@@ -59,11 +59,9 @@ class RequestItem extends Component {
     this.props.deleteRequest(this.props.id);
   }
   onDeny() {
-    console.log(this.props.id)
     this.props.deleteRequest(this.props.id);
   }
   render() {
-    console.log(this.state.trip);
     return (
       <View style={styles.container}>
         <View style={styles.infoWrapper}>

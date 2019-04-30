@@ -43,7 +43,7 @@ class DetailPage extends Component {
     const { trips } = this.props.trip;
 
     const tripData = trips.find(trip => trip._id == this.props.navigation.state.params.Trip);
-    console.log(tripData);
+
     this.setState({
       trip: tripData
     })
@@ -64,7 +64,7 @@ class DetailPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <SearchBar messageOnPress={() => this.props.navigation.navigate('MessageScreen')}/>
+        <SearchBar messageOnPress={() => this.props.navigation.navigate('MessageScreen', {message: this.state.trip.messageRef})}/>
         <MapboxGL.MapView
           ref={(c) => this._map = c}
           style={{flex: 1}}

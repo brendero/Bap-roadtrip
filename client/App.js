@@ -9,6 +9,7 @@ import Home from './app/screens/Home';
 import { Provider } from 'react-redux';
 import store from './app/config/store';
 import DetailPage from './app/screens/trip/DetailPage';
+import AddMember from './app/components/Trips/Detail/Members/AddMember'
 
 const Navigation = createSwitchNavigator(
   {
@@ -39,7 +40,7 @@ class App extends Component {
   render() {
     return(
       <Provider store={ store }>
-        <StartNavigator/>
+        <AddMember/>
       </Provider>
     )
   }

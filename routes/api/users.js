@@ -90,7 +90,7 @@ router.post('/login', (req, res) => {
 
 // Get User by id
 // Access: Private
-router.get('/:id', passport.authenticate('jwt', { session: false }), (req, res ) => {
+router.get('/detail/:id', passport.authenticate('jwt', { session: false }), (req, res ) => {
   User.findById(req.params.id)
     .then(user => {
       const User = {
@@ -112,6 +112,20 @@ router.post('/update', passport.authenticate('jwt', {session: false }), (req, re
         User.findByIdAndUpdate(user.id, {$set: req.body}, {new: true})
           .then(user => res.json(user))
           .catch(err => res.status(404).json({success:false}))
+      }
+    })
+    .catch(err => res.status(404).json(err))
+})
+
+// DESC: Search users with filtering
+// Access: public
+router.get('/search', (req, res) => {
+  User.find(( { $text: { $search: req.query.filter } } ))
+    .then(users => {
+      if(users) {
+        res.json(users)
+      } else {
+        res.status(404).json({success:false})
       }
     })
     .catch(err => res.status(404).json(err))

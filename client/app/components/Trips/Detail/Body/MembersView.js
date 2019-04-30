@@ -2,8 +2,17 @@ import React, { Component } from 'react'
 import { View, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import axios from 'axios'
 import FontAwesome, {Icons } from 'react-native-fontawesome';
+import AddMember from '../Members/AddMember';
+import { createStackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-export default class MembersView extends Component {
+const memberNavigation = createStackNavigator({
+  addMemberScreen: {
+    screen: AddMember
+  }
+})
+class MembersView extends Component {
   constructor(props) {
     super(props);
 
@@ -18,7 +27,7 @@ export default class MembersView extends Component {
     }, 400);
   }
   getUserInfoById(id) {
-    axios.get(`http://10.0.2.2:5000/api/users/${id}`)
+    axios.get(`http://10.0.2.2:5000/api/users/detail/${id}`)
     .then(res => {
       this.setState({
         users: [res.data, ...this.state.users]
@@ -28,7 +37,7 @@ export default class MembersView extends Component {
   }
   doIt() {
     const membersArray = this.props.members;
-    console.log(membersArray);
+
     if(membersArray !== undefined) {
       membersArray.forEach(user => {
         this.getUserInfoById(user)
@@ -49,10 +58,23 @@ export default class MembersView extends Component {
             <FontAwesome style={styles.addBtnIcon}>{Icons.plus}</FontAwesome>
           </TouchableOpacity>
         </ScrollView>
+        <AddMember/>
       </View>
     )
   }
 }
+
+MembersView.propTypes = {
+  request: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  request: state.request,
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, {})(MembersView)
 
 const styles = StyleSheet.create({
   memberImage: {

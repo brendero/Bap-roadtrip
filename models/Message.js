@@ -5,9 +5,19 @@ const MessageSchema = new Schema({
   messages: [
     {
       user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        id : {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          required: true
+        },
+        name: {
+          type: String,
+          required: true
+        }, 
+        avatar: {
+          type: String,
+          required: true
+        }
       },
       body: {
         type: String,

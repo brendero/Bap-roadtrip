@@ -6,8 +6,8 @@ const Message = require('../../models/Message');
 
 // Access: Private
 // DESC: Get the messages from Id
-router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Message.findById(req.body.id)
+router.get('/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Message.findById(req.params.id)
     .then(message => {
       res.json(message);
     })
@@ -20,7 +20,7 @@ router.post('/', passport.authenticate('jwt', { session: false}), (req, res) => 
   Message.findById(req.body.id)
     .then(request => {
       if(request) {
-        Message.findOneAndUpdate(request.id, {$set: req.body}, {new: true})
+        Message.findOneAndUpdate({_id: request.id}, {$set: {"messages": req.body.messages}}, {new: true})
         .then(req => res.json(req))
         .catch(err => res.status(404).json({success: false}))
       } else {
@@ -33,3 +33,5 @@ router.post('/', passport.authenticate('jwt', { session: false}), (req, res) => 
     })
     .catch(err => res.json(err));
 })
+
+module.exports = router;
