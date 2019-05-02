@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
-import { Text, TextInput, Modal, StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native'
+import { Text, TextInput, Modal, StyleSheet, View, ScrollView, TouchableOpacity, Image } from 'react-native'
 import FontAwesome, {Icons} from 'react-native-fontawesome';
 import axios from 'axios';
 import {colors} from '../../../../config/styles';
+import { addRequest } from '../../../../actions/requestActions';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-export default class AddMember extends Component {
+class AddMember extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      memberModalVisible: true,
       filteredUsers: []
     }
 
@@ -18,53 +20,91 @@ export default class AddMember extends Component {
   searchUsers(value) {
     axios.get(`http://10.0.2.2:5000/api/users/search?filter=${value}`)
       .then(res => {
-        console.log(res);
+        console.log(res.data);
         this.setState({filteredUsers: res.data})
       })
       .catch(err => console.log(err))
+  }
+  makeNewRequest(id) {
+    const { trip } = this.props;
+
+    const tripData = {
+      name: trip.name,
+      id: trip._id
+    }
+    const requestData = {
+      invitedUser: id,
+      trip: tripData
+    }
+    // TODO: if request is added then put away add button and make it a confirmation
+    this.props.addRequest(requestData)
   }
   render() {
     return (
       <Modal
         animationType="slide"
         transparent={true}
-        visible={this.state.memberModalVisible}
+        visible={this.props.modalVisible}
         onRequestClose={() => {
           Alert.alert('Modal has been closed.');
         }}
       >
       <View style={styles.container}>
         <View style={styles.wrapper}>
-          <View>
+          <View style={styles.searchInput}>
             <TextInput
               value={this.state.filterQuery}
               onChangeText={value => this.searchUsers(value)}
+              placeholder="Search for users"
             />
+            <FontAwesome>{Icons.search}</FontAwesome>
           </View>
-          <ScrollView>
-            <Text>
+          <View style={{flex: 1}}>
+            <ScrollView contentContainerStyle={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-start'}}>
             {
-              this.state.filteredUsers === [] ? 
-              this.state.filteredUsers.map((avatar, email, name, _id) => (
-                <Text>{avatar}</Text>
-                <Text>{email}</Text>
-                <Text>{name}</Text>
-                <Text>{_id}</Text>
-              )) : 'true'
-            }
-            </Text>
-          </ScrollView>
+              this.state.filteredUsers.length !== 0 ? 
+              this.state.filteredUsers.map(user => (
+                <View key={user._id} style={styles.userWrapper}>
+                    <View>
+                      <Image source={{uri: user.avatar}} style={styles.profileImage}/>
+                    </View>
+                    <View style={{}}>
+                      <Text>{user.name}</Text>
+                      <Text>{user.email}</Text>
+                    </View>
+                  <View>
+                    <TouchableOpacity style={styles.addBtn} onPress={() => this.makeNewRequest(user._id)}>
+                      <FontAwesome style={styles.addBtnIcon}>{Icons.plus}</FontAwesome>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                  )) : <Text>No user with that Name or email</Text>
+                }
+            </ScrollView>
+          </View>
           <TouchableOpacity
-            onPress={() => this.setState({memberModalVisible: false})}
+            style={styles.cancelBtn}
+            onPress={this.props.onPress}
             >
-            <FontAwesome>{Icons.times} cancel</FontAwesome>
+              <Text style={{color: 'white', fontWeight: "700"}}>cancel</Text>
           </TouchableOpacity>
         </View>
       </View> 
     </Modal>
     )
-  }
+  } 
 }
+
+AddMember.propTypes = {
+  addRequest: PropTypes.func.isRequired,
+  request: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  request: state.request,
+})
+
+export default connect(mapStateToProps, {addRequest})(AddMember)
 
 const styles = StyleSheet.create({
   container: {
@@ -76,5 +116,46 @@ const styles = StyleSheet.create({
     width: '90%',
     height: '80%',
     elevation: 3
+  },
+  searchInput: {
+    width: '100%',
+    borderBottomColor: '#bbb',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20
+  },
+  userWrapper: {
+    width: '80%',
+    margin: 'auto',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 20,
+    borderBottomColor: '#bbb',
+    borderBottomWidth: 2
+  },
+  addBtn: {
+    backgroundColor: colors.secondaryLight,
+    padding: 10,
+    borderRadius: 100
+  },
+  addBtnIcon: {
+    color: 'white',
+  },
+  profileImage: {
+    width: 50, 
+    height: 50, 
+    resizeMode: 'cover', 
+    borderRadius: 100
+  },
+  cancelBtn: {
+    backgroundColor: colors.secondaryDark,
+    flexDirection: 'row',
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10
   }
 })

@@ -72,6 +72,7 @@ export class Messages extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
+      {/* TODO: see that you can return from messages screen and title is rendered on top */}
       {/* TODO: maybe use Flatlist instead of .map for messageRendering */}
         <View style={{height: (height - 150)}}>
           <ScrollView 

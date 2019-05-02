@@ -12,7 +12,7 @@ export default class SearchBar extends Component {
   }
   render() {
     return (
-      <View style={{width: '100%', flexDirection: 'row',justifyContent: 'center', position: 'absolute', top: 20}}>
+      <View style={{width: '100%', flexDirection: 'row',justifyContent: 'center', position: 'absolute', top: 20, zIndex: 1}}>
         <View style={styles.SearchBar}>
           <View style={styles.formWrapper}>
             <FontAwesome style={{paddingHorizontal: 12}}>{Icons.search}</FontAwesome>

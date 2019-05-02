@@ -17,9 +17,11 @@ class MembersView extends Component {
     super(props);
 
     this.state= {
-      users: []
+      users: [],
+      modalVisible: false
     }
     this.doIt = this.doIt.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
   componentWillMount() {
     setTimeout(() => {
@@ -44,6 +46,11 @@ class MembersView extends Component {
       });
     }
   }
+  toggleModal() {
+    this.setState({
+      modalVisible: !this.state.modalVisible
+    })
+  }
   render() {
     const { users } = this.state;
     console.log(this.state.users)
@@ -54,11 +61,11 @@ class MembersView extends Component {
           {(users || []).map((user, index) => (
             <Image key={index} style={styles.memberImage} source={{uri: user.avatar}}/>
           ))}
-          <TouchableOpacity style={styles.addBtn}>
+          <TouchableOpacity onPress={this.toggleModal} style={styles.addBtn}>
             <FontAwesome style={styles.addBtnIcon}>{Icons.plus}</FontAwesome>
           </TouchableOpacity>
         </ScrollView>
-        <AddMember/>
+        <AddMember trip={this.props.trip} modalVisible={this.state.modalVisible} onPress={this.toggleModal}/>
       </View>
     )
   }

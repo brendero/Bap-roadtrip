@@ -10,7 +10,7 @@ export default class OptionsBody extends Component {
       <ScrollView>
         <View style={styles.itemWrapper} >
           <Text>Members</Text>
-          <MembersView members={this.props.trip.collaborators}/>
+          <MembersView trip={this.props.trip} members={this.props.trip.collaborators}/>
         </View>
         <View style={styles.itemWrapper}>
           <Text>Stops</Text>

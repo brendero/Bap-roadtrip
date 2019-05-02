@@ -46,7 +46,7 @@ class Register extends Component {
       password: this.state.password,
       password2 : this.state.confirmedPassword,
     }
-    
+    // TODO: Redirect after register
     this.props.registerUser(newUser);
 
   }

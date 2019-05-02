@@ -8,7 +8,9 @@ import jwt_decode from 'jwt-decode';
 export const registerUser = userData => dispatch => {
   axios
     .post('http://10.0.2.2:5000/api/users/register', userData)
-    .then(res => console.log(res.data))
+    .then(res => {
+      console.log(res.data)
+    })
     .catch(err => dispatch({
       type: GET_ERRORS,
       payload: err.response.data
@@ -29,11 +31,10 @@ export const loginUser = userData => dispatch => {
 
       dispatch(setCurrentUser(decoded));
     })
-    .catch(err => console.log(err))
-    // .catch(err => dispatch({
-    //   type: GET_ERRORS,
-    //   payload: err.response
-    // }));
+    .catch(err => dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data
+    }));
 };
 
 export const logoutUser = () => dispatch => {
