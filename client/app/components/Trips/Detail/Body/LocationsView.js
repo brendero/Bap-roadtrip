@@ -18,7 +18,6 @@ export default class LocationsView extends Component {
             </View>
           )) : null}
           <TouchableOpacity style={{width: 170, height: 170, backgroundColor: 'lightgrey', justifyContent: 'center', alignItems: 'center'}}>
-            <FontAwesome style={{color: 'white', fontSize: 20}}>{Icons.plus}</FontAwesome>
           </TouchableOpacity>
         </ScrollView>
       </View>

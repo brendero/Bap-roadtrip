@@ -25,7 +25,7 @@ export default class SearchBar extends Component {
                   searchQuery: value
                 });
               }}
-              >
+            >
             </TextInput>
           </View>
           <View style={styles.messageWrapper}>

@@ -5,10 +5,8 @@ import {
   ImageBackground,
   StyleSheet,
   Text,
-  Modal,
   TouchableHighlight,
   TouchableOpacity,
-  TextInput
 } from 'react-native';
 import { createMaterialTopTabNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import detailPage from './trip/DetailPage';
@@ -19,14 +17,14 @@ import PersonalTrips from './home/PersonalTrips';
 import Requests from './home/Requests';
 import Archive from './home/Archive';
 import Messages from './trip/Messages';
-import FontAwesome, {Icons } from 'react-native-fontawesome';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 import { colors } from '../config/styles';
 import PropTypes from 'prop-types';
 import { PermissionsAndroid } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import cloudinaryUpload from '../utils/cloudinary';
 import MapboxGL from '@mapbox/react-native-mapbox-gl';
-import axios from 'axios';
+import AddTripModal from '../components/Trips/AddTripModal';
 
 const Navigation = createMaterialTopTabNavigator(
   {
@@ -116,14 +114,11 @@ class Home extends Component {
     this.state = {
       modalVisible: false,
       headerVisible: true,
-      userLocation: columbusCircleCoordinates,
-      destination: '',
-      newTripName: ''
+      userLocation: columbusCircleCoordinates
     }
     this.Logout = this.Logout.bind(this);
     this.checkPermission = this.checkPermission.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.addNewTrip = this.addNewTrip.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     if(!nextProps.auth.isAuthenticated) {
@@ -148,26 +143,6 @@ class Home extends Component {
         headerVisible: true
       })
     }
-  }
-  addNewTrip() {
-      if(this.state.destination !== '' || this.state.newTripName !== '') {
-          axios.post('http://10.0.2.2:5000/api/messages')
-          .then(res => {
-              const locationData = {
-                  // TODO: make adress dynamic
-                  addres: "TestAdress",
-                  lattitude: this.state.destination['1'],
-                  longitude: this.state.destination['0'] 
-                }
-            
-                const newTripData = {
-                    name: this.state.newTripName,
-                    location : locationData,
-                    messageRef: res.data
-                }  
-              this.props.addTrip(newTripData);
-          })
-      }
   }
   getGeoLocation() {
     const granted = PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
@@ -254,62 +229,7 @@ class Home extends Component {
               <Text style={styles.profileName}>{user.name}</Text>
             </ImageBackground>
           </View>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}>
-            <View style={modal.container}>
-              <View style={modal.wrapper}>
-                <View style={modal.titleWrapper}>
-                  <TouchableOpacity onPress={this.toggleModal}><FontAwesome style={{color: 'white', fontSize: 20}}>{Icons.times}</FontAwesome></TouchableOpacity>
-                  <Text style={modal.title}>Your new trip</Text>
-                  <Image source={require('../assets/Logo.png')} style={{width: 50, height: 50}}></Image>
-                </View>
-                <View style={{margin: 10}}>
-                  <Text>Name</Text>
-                  <TextInput
-                  style={modal.nameInput}
-                  value={this.state.tripName}
-                  maxLength={40}
-                  onChangeText={value => {
-                    this.setState({
-                      tripName: value
-                    })
-                  }}
-                  />
-                </View>
-                <View style={{flex:1}}>
-                  <Text style={{marginLeft: 10}}>Destination</Text>
-                  {/* Add Map */}
-                  <MapboxGL.MapView
-                    ref={(c) => this._map = c}
-                    style={{flex: 1}}
-                    zoomLevel={13}
-                    centerCoordinate={this.state.userLocation}
-                    onPress={(event) => {
-                      console.log(event.geometry.coordinates);
-                      this.setState({ destination: event.geometry.coordinates})
-                    }}
-                    styleURL={ MapboxGL.StyleURL.TrafficDay }>
-                    { this.state.destination ? 
-                      <MapboxGL.PointAnnotation 
-                        key="key1"
-                        id='ùldkjms'
-                        title="end Destination"
-                        coordinate={this.state.destination}
-                      ></MapboxGL.PointAnnotation>
-                      : null }
-                  </MapboxGL.MapView>
-                </View>
-                <TouchableHighlight onPress={this.addNewTrip} style={{backgroundColor: colors.secondaryDark, padding: 10, borderRadius: 50,position: 'absolute', bottom: 10, right: 10}}>
-                  <Text style={{color: 'white'}}><FontAwesome style={{paddingRight: 30}}>{Icons.paperPlane}</FontAwesome>Submit</Text>
-                </TouchableHighlight>
-              </View>
-            </View>
-          </Modal>        
+          <AddTripModal userLocation={this.state.userLocation} modalVisible={this.state.modalVisible} onPress={this.toggleModal}/>
         </View>
         : null}
         <View style={[this.state.headerVisible ? styles.navigationContainer : styles.navigationContainer2]}>
@@ -337,7 +257,7 @@ const mapStateToProps = (state) => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps, {logoutUser, updateUserAvatar, addTrip})(Home);
+export default connect(mapStateToProps, {logoutUser, updateUserAvatar})(Home);
 
 const styles = StyleSheet.create({
   profilePicWrapper : {
@@ -395,35 +315,3 @@ const styles = StyleSheet.create({
     height: '100%'
   }
 });
-
-const modal = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center'
-  }, 
-  wrapper: {
-    backgroundColor: 'white',
-    width: '90%',
-    height: '80%',
-    elevation: 3
-  },
-  titleWrapper: {
-    backgroundColor: colors.secondaryDark,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 15
-  },
-  title: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontFamily: 'roboto',
-    fontSize: 20
-  },
-  nameInput: {
-    backgroundColor: 'lightgrey',
-    borderRadius: 5,
-    padding: 0,
-    marginTop: 3
-  }
-})
