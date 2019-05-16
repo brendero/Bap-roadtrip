@@ -8,6 +8,7 @@ import SearchLocationComponent from './SearchLocationComponent';
 import {forwardGeocoding} from '../../utils/LocationService'
 import PropTypes from 'prop-types';
 import { addTrip } from '../../actions/tripActions';
+import axios from 'axios';
 
 class AddTripModal extends Component {
   constructor(props) {
@@ -16,38 +17,46 @@ class AddTripModal extends Component {
     this.state = {
       searchResults: [],
       destination: '',
-      newTripName: ''
+      newTripName: '',
+      endLocation: ''
     }
 
     this.addNewTrip = this.addNewTrip.bind(this);
+    this.setDestination = this.setDestination.bind(this);
   } 
+  setDestination(addres, lattitude, longitude) {
+    this.setState({
+      destination: [parseFloat(longitude), parseFloat(lattitude)],
+      endLocation: {
+        addres: `${addres[1]} ${addres[0]} ${addres[3]}`,
+        lattitude,
+        longitude
+      }
+    })
+  }
   searchAddressLocation(adress) {
     // This works but don't make to many requests 
-    // forwardGeocoding(adress)
-    //   .then(res => {
-    //   this.setState({
-    //     searchResults: res.data
-    //   })
-    // })
-    //   .catch(err => console.log(err))    
+    forwardGeocoding(adress)
+      .then(res => {
+      this.setState({
+        searchResults: res.data
+      })
+    })
+      .catch(err => console.log(err))    
   }
   addNewTrip() {
-    if(this.state.destination !== '' || this.state.newTripName !== '') {
+    if(this.state.destination !== '' || this.state.newTripName !== '' || this.state.endLocation !== '') {
         axios.post('http://10.0.2.2:5000/api/messages')
         .then(res => {
-            const locationData = {
-                // TODO: make adress dynamic
-                addres: "TestAdress",
-                lattitude: this.state.destination['1'],
-                longitude: this.state.destination['0'] 
-              }
-          
-              const newTripData = {
-                  name: this.state.newTripName,
-                  location : locationData,
-                  messageRef: res.data
-              }  
+            const locationData = this.state.endLocation;
+            
+            const newTripData = {
+                name: this.state.newTripName,
+                location : locationData,
+                messageId: res.data._id
+            }  
             this.props.addTrip(newTripData);
+            this.props.onPress;
         })
     }
   }
@@ -71,24 +80,24 @@ class AddTripModal extends Component {
             <Text>Name</Text>
             <TextInput
             style={modal.nameInput}
-            value={this.state.tripName}
+            value={this.state.newTripName}
             maxLength={40}
             onChangeText={value => {
               this.setState({
-                tripName: value
+                newTripName: value
               })
             }}
             />
           </View>
           <View style={{flex:1}}>
             <Text style={{marginLeft: 10}}>Destination</Text>
-            <SearchLocationComponent searchResults={this.state.searchResults} onSubmit={value => this.searchAddressLocation(value)}/>
+            <SearchLocationComponent searchResults={this.state.searchResults} onSubmit={value => this.searchAddressLocation(value)} setDestination={this.setDestination}/>
 
             <MapboxGL.MapView
               ref={(c) => this._map = c}
               style={{flex: 1}}
               zoomLevel={13}
-              centerCoordinate={this.props.userLocation}
+              centerCoordinate={this.state.destination ? this.state.destination : this.props.userLocation}
               styleURL={ MapboxGL.StyleURL.TrafficDay }>
               { this.state.destination ? 
                 <MapboxGL.PointAnnotation 

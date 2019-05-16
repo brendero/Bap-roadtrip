@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, TextInput, ScrollView } from 'react-native'
+import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native'
 import FontAwesome, { Icons } from 'react-native-fontawesome';
+import {colors} from '../../config/styles';
 
 export default class SearchLocationComponent extends Component {
   constructor(props) {
@@ -9,11 +10,11 @@ export default class SearchLocationComponent extends Component {
 
   render() {
     return(
-      <View style={{width: '100%', flexDirection: 'row',justifyContent: 'center', position: 'absolute', top: 30, zIndex: 1}}>
+      <View style={{width: '100%', flexDirection: 'column',justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 30, zIndex: 1}}>
       <View style={styles.SearchBar}>
         <View style={styles.formWrapper}>
           <FontAwesome style={{paddingHorizontal: 12}}>{Icons.search}</FontAwesome>
-          <TextInput 
+          <TextInput
             style={styles.searchForm}
             placeholder="search for an addres or place"
             onSubmitEditing={(event) => {
@@ -22,20 +23,30 @@ export default class SearchLocationComponent extends Component {
           >
           </TextInput>
         </View>
-        <ScrollView>
-          <View>
-            {this.props.searchResult ? 
-              this.props.searchResult.map(result => (
-                <View key={result.place_id}>
-                    <Text>{result.display_name}</Text>
-                    <Text>{result.lat}</Text>
-                    <Text>{result.lon}</Text>
-                </View>
-              ))
-            }   
-          </View> 
-        </ScrollView>
       </View>
+        <View style={{width: '90%', height: 200}}>
+        <ScrollView >
+            {this.props.searchResults ?
+              this.props.searchResults.map(result => {
+                const addresArray = result.display_name.split(',');
+
+                return (
+                <TouchableOpacity key={result.place_id} onPress={() => this.props.setDestination(result.display_name.split(','), result.lat, result.lon)}>
+                  <View style={styles.searchResultsWrapper} >
+                  <FontAwesome style={styles.searchResultIcon}>
+                    {
+                      (result.class === "building") ? Icons.home : null
+                      (result.class === "tourism") ? Icons.mapPin : null
+                    }
+                  </FontAwesome>
+                  <Text style={styles.searchResultAddres}>{ addresArray[1] } { addresArray[0] } { addresArray[2] }</Text>
+                  </View>
+                </TouchableOpacity>
+              )
+              }): null
+            }
+          </ScrollView>
+        </View>
     </View>
     )
   }
@@ -49,8 +60,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     elevation: 3,
     width: '90%',
-    borderRadius: 100,
     margin: 0,
+    height: 40,
     padding: 5
   },
   formWrapper: {
@@ -62,6 +73,22 @@ const styles = StyleSheet.create({
   searchForm: {
     padding: 0,
     margin:0,
+    width: '90%'
+  },
+  searchResultsWrapper: {
+    paddingHorizontal: 10, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'flex-start', 
+    backgroundColor: 'white'
+  },
+  searchResultIcon: {
+    color: colors.secondaryDark, 
+    marginRight: 5
+  },
+  searchResultAddres: {
+    borderBottomWidth: 0.5, 
+    paddingVertical: 10, 
     width: '90%'
   }
 })

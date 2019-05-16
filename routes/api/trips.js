@@ -41,7 +41,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
             lat: req.body.location.lattitude,
             lng: req.body.location.longitude 
           },
-          messages: req.body.messageId
+          messageRef: req.body.messageId
         })
       
         newTrip.save()
