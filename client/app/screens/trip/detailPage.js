@@ -1,19 +1,10 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
-import { PermissionsAndroid } from 'react-native'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import BottomCard from '../../components/Trips/Detail/BottomCard';
-import MapboxGL from '@mapbox/react-native-mapbox-gl';
 import SearchBar from '../../components/Forms/SearchBar';
-
-const YOUR_ACCES_TOKEN = "pk.eyJ1IjoiYnJvbnQyIiwiYSI6ImNqdWI4dm1teTA4eXk0M21oOTBuMmM2NGIifQ._07g-0VCeZ7jadmmxRE64g";
-
-MapboxGL.setAccessToken(YOUR_ACCES_TOKEN);
-
-const columbusCircleCoordinates = [
-  4.137480, 51.098190
-];
+import {Permissions, MapView} from 'expo';
 
 class DetailPage extends Component {
   constructor(props) {
@@ -21,23 +12,12 @@ class DetailPage extends Component {
     
     this.state = {
       trip: '',
-      userLocation: columbusCircleCoordinates
+      userLocation: ''
     }
   }
   componentDidMount() {
     this.getTripDetails();
-
-    const granted = PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
-    granted.then(res => {
-      if(res === PermissionsAndroid.RESULTS.GRANTED) {
-        this.getGeoLocation()
-      }
-      else {
-        alert(`can't get your location brug`)
-      }
-    }
-    )
-    .catch(err => console.log(err))
+    this.getGeoLocation()
   }
   getTripDetails() {
     const { trips } = this.props.trip;
@@ -49,29 +29,43 @@ class DetailPage extends Component {
     })
   }
   getGeoLocation() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const userCoords = [position.coords.longitude, position.coords.latitude]
+    const granted = Permissions.askAsync(Permissions.LOCATION)
 
-        this.setState({
-          userLocation: userCoords
-        })
-      },
-      (err) => console.log(err),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
+    granted.then(res => {
+      if(res.status === 'granted') {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userCoords = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421
+            }
+    
+            this.setState({
+              userLocation: userCoords
+            })
+          },
+          (err) => console.log(err),
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+      }
+      else {
+        alert(`can't get your location`)
+      }
+    }
+    )
+    .catch(err => console.log(err))
   }
   render() {
     return (
       <View style={styles.container}>
         <SearchBar messageOnPress={() => this.props.navigation.navigate('MessageScreen', {message: this.state.trip.messageRef})}/>
-        <MapboxGL.MapView
-          ref={(c) => this._map = c}
+        <MapView
           style={{flex: 1}}
-          zoomLevel={13}
-          centerCoordinate={this.state.userLocation}
-          styleURL={ MapboxGL.StyleURL.TrafficDay }>
-        </MapboxGL.MapView>
+          initialRegion={this.state.userLocation}
+        >
+        </MapView>
         <BottomCard tripData={this.state.trip}/>
       </View>
     )

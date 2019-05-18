@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import FontAwesome, { Icons } from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 import { colors } from '../../../../config/styles';
 
 export default class BookingsView extends Component {

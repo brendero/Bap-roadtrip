@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 export default class LocationsView extends Component {
   render() {

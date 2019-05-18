@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native'
-import FontAwesome, { Icons } from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 import {colors} from '../../config/styles';
 
 export default class SearchLocationComponent extends Component {
@@ -13,7 +13,7 @@ export default class SearchLocationComponent extends Component {
       <View style={{width: '100%', flexDirection: 'column',justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 30, zIndex: 1}}>
       <View style={styles.SearchBar}>
         <View style={styles.formWrapper}>
-          <FontAwesome style={{paddingHorizontal: 12}}>{Icons.search}</FontAwesome>
+          <FontAwesome name="search" style={{paddingHorizontal: 12}}/>
           <TextInput
             style={styles.searchForm}
             placeholder="search for an addres or place"
@@ -33,11 +33,13 @@ export default class SearchLocationComponent extends Component {
                 return (
                 <TouchableOpacity key={result.place_id} onPress={() => this.props.setDestination(result.display_name.split(','), result.lat, result.lon)}>
                   <View style={styles.searchResultsWrapper} >
-                  <FontAwesome style={styles.searchResultIcon}>
-                    {
-                      (result.class === "building") ? Icons.home : null
-                      (result.class === "tourism") ? Icons.mapPin : null
+                  <FontAwesome
+                    name={  
+                      (result.class === "building") ? "home" : 
+                      (result.class === "tourism") ? "map-pin": "home"
                     }
+                    style={styles.searchResultIcon}>
+                    
                   </FontAwesome>
                   <Text style={styles.searchResultAddres}>{ addresArray[1] } { addresArray[0] } { addresArray[2] }</Text>
                   </View>

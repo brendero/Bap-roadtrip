@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Text, TextInput, Modal, StyleSheet, View, ScrollView, TouchableOpacity, Image } from 'react-native'
-import FontAwesome, {Icons} from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import {colors} from '../../../../config/styles';
 import { addRequest } from '../../../../actions/requestActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { API_URL } from '../../../../config/dbconfig';
 
 class AddMember extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class AddMember extends Component {
     this.searchUsers = this.searchUsers.bind(this);
   }
   searchUsers(value) {
-    axios.get(`http://10.0.2.2:5000/api/users/search?filter=${value}`)
+    axios.get(`${API_URL}/api/users/search?filter=${value}`)
       .then(res => {
         console.log(res.data);
         this.setState({filteredUsers: res.data})
@@ -57,10 +58,10 @@ class AddMember extends Component {
               onChangeText={value => this.searchUsers(value)}
               placeholder="Search for users"
             />
-            <FontAwesome>{Icons.search}</FontAwesome>
+            <FontAwesome name="search"/>
           </View>
           <View style={{flex: 1}}>
-            <ScrollView contentContainerStyle={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-start'}}>
+            <ScrollView contentContainerStyle={{flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
             {
               this.state.filteredUsers.length !== 0 ? 
               this.state.filteredUsers.map(user => (
@@ -68,13 +69,13 @@ class AddMember extends Component {
                     <View>
                       <Image source={{uri: user.avatar}} style={styles.profileImage}/>
                     </View>
-                    <View style={{}}>
+                    <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
                       <Text>{user.name}</Text>
                       <Text>{user.email}</Text>
                     </View>
                   <View>
                     <TouchableOpacity style={styles.addBtn} onPress={() => this.makeNewRequest(user._id)}>
-                      <FontAwesome style={styles.addBtnIcon}>{Icons.plus}</FontAwesome>
+                      <FontAwesome name="plus" style={styles.addBtnIcon}/>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   userWrapper: {
-    width: '80%',
+    width: '90%',
     margin: 'auto',
     flexDirection: 'row',
     justifyContent: 'space-between',

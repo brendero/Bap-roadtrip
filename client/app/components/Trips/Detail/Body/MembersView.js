@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { View, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import axios from 'axios'
-import FontAwesome, {Icons } from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 import AddMember from '../Members/AddMember';
 import { createStackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { API_URL } from '../../../../config/dbconfig';
 
 const memberNavigation = createStackNavigator({
   addMemberScreen: {
@@ -29,7 +30,7 @@ class MembersView extends Component {
     }, 400);
   }
   getUserInfoById(id) {
-    axios.get(`http://10.0.2.2:5000/api/users/detail/${id}`)
+    axios.get(`${API_URL}/api/users/detail/${id}`)
     .then(res => {
       this.setState({
         users: [res.data, ...this.state.users]
@@ -62,7 +63,7 @@ class MembersView extends Component {
             <Image key={index} style={styles.memberImage} source={{uri: user.avatar}}/>
           ))}
           <TouchableOpacity onPress={this.toggleModal} style={styles.addBtn}>
-            <FontAwesome style={styles.addBtnIcon}>{Icons.plus}</FontAwesome>
+            <FontAwesome name="plus" style={styles.addBtnIcon}/>
           </TouchableOpacity>
         </ScrollView>
         <AddMember trip={this.props.trip} modalVisible={this.state.modalVisible} onPress={this.toggleModal}/>

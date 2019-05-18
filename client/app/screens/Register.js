@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView  } from 'react-native';
 import PropTypes from 'prop-types';
-import FontAwesome, { Icons } from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 import validate from '../components/Forms/ValidateWrapper';
 import { connect } from 'react-redux';
 import { registerUser } from '../actions/authActions';
@@ -69,7 +69,7 @@ class Register extends Component {
             
             <View style={styles.formWrapper}>
               <View style={styles.formInput}>
-                <FontAwesome style={styles.inputIcons}>{Icons.envelopeO}</FontAwesome>
+                <FontAwesome name="envelope" style={styles.inputIcons}/>
                 <TextInput
                   style={{padding: 0, width: '80%'}}
                   value={this.state.email}
@@ -82,7 +82,7 @@ class Register extends Component {
               </View>
               {errors.email ? <Text style={styles.errorMsg}>{errors.email}</Text> : null}
               <View style={styles.formInput}>
-                <FontAwesome style={styles.inputIcons}>{Icons.user}</FontAwesome>
+                <FontAwesome name="user" style={styles.inputIcons}/>
                 <TextInput
                   style={{padding: 0, width: '80%'}}
                   value={this.state.name}
@@ -95,7 +95,7 @@ class Register extends Component {
               </View>
               {errors.name ? <Text style={styles.errorMsg}>{errors.name}</Text> : null}
               <View style={styles.formInput}>
-                <FontAwesome style={styles.inputIcons}>{Icons.lock}</FontAwesome>
+                <FontAwesome name="lock" style={styles.inputIcons}/>
                 <TextInput
                   style={{padding: 0, width: '80%'}}
                   value={this.state.password}
@@ -109,7 +109,7 @@ class Register extends Component {
               </View>
               {errors.password ? <Text style={styles.errorMsg}>{errors.password}</Text> : null}
               <View style={styles.formInput}>
-                <FontAwesome style={styles.inputIcons}>{Icons.lock}</FontAwesome>
+                <FontAwesome name="lock" style={styles.inputIcons}/>
                 <TextInput
                   style={{padding: 0, width: '80%'}}
                   value={this.state.confirmedPassword}

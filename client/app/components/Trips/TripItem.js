@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, Image, StyleSheet, TouchableOpacity, Animated } from 'react-native'
-import Fontawesome, { Icons } from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { colors } from '../../config/styles';
 import { connect } from 'react-redux';
@@ -50,18 +50,18 @@ class TripItem extends Component {
           </View>
           <View style={styles.membersContainer}>
             <Text style={styles.memberNumber}>{this.props.membersCount}</Text>
-            <Fontawesome style={styles.memberIcon}>{Icons.userO}</Fontawesome>
+            <FontAwesome name="user" style={styles.memberIcon}/>
           </View>
       </Animated.View>
       </TouchableOpacity>
       </GestureRecognizer>
       <Animated.View style={[styles.btnWrapper, this.state.btnToggle ? styles.openBtn : styles.closedBtn]}>
         <TouchableOpacity style={styles.archiveBtn} onPress={this.onArchive}>
-          <Fontawesome style={styles.btnIcon}>{Icons.bookmarkO}</Fontawesome>
+          <FontAwesome name="bookmark" style={styles.btnIcon}/>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.deleteBtn} onPress={this.onDelete}>
-          <Fontawesome style={styles.btnIcon}>{Icons.times}</Fontawesome>
+          <FontAwesome name="times" style={styles.btnIcon}/>
         </TouchableOpacity>
       </Animated.View>
       </View>

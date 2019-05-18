@@ -8,6 +8,7 @@ import Register from './app/screens/Register';
 import Home from './app/screens/Home';
 import { Provider } from 'react-redux';
 import store from './app/config/store';
+import { Font } from 'expo';
 
 const Navigation = createSwitchNavigator(
   {
@@ -34,11 +35,29 @@ const StartNavigator = createAppContainer(Navigation);
 class App extends Component {
   constructor() {
     super();
+    this.state = {
+      fontLoaded: false
+    }
+  }
+  async componentDidMount() {
+    try {
+      await Font.loadAsync({
+        roboto: require("./app/fonts/Roboto-Regular.ttf")
+      });
+      this.setState({ fontLoaded: true });
+    } catch (error) {
+      console.log(error);
+    }
+
   }
   render() {
     return(
       <Provider store={ store }>
-        <StartNavigator/>
+        {
+          this.state.fontLoaded ?
+          <StartNavigator/>
+          : null
+        }
       </Provider>
     )
   }

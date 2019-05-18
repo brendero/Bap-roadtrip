@@ -1,4 +1,31 @@
 {
-  "name": "client",
-  "displayName": "client"
+  "expo": {
+    "name": "WayKing",
+    "slug": "wayking",
+    "privacy": "public",
+    "sdkVersion": "32.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "./assets/*",
+      "./app/assets/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "description": "WayKing is een applicatie gemaakt in opdracht van de arteveldehogeschool. Met WayKing wordt reizen plannen in een groep gemakkelijker."
+  }
 }

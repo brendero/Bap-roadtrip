@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, TextInput, TouchableOpacity } from 'react-native'
-import FontAwesome, { Icons } from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default class SearchBar extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ export default class SearchBar extends Component {
       <View style={{width: '100%', flexDirection: 'row',justifyContent: 'center', position: 'absolute', top: 20, zIndex: 1}}>
         <View style={styles.SearchBar}>
           <View style={styles.formWrapper}>
-            <FontAwesome style={{paddingHorizontal: 12}}>{Icons.search}</FontAwesome>
+            <FontAwesome name="search" style={{paddingHorizontal: 12}}/>
             <TextInput 
               value={this.state.searchQuery}
               style={styles.searchForm}
@@ -30,7 +30,7 @@ export default class SearchBar extends Component {
           </View>
           <View style={styles.messageWrapper}>
             <TouchableOpacity onPress={this.props.messageOnPress}>
-              <FontAwesome>{Icons.commentsO}</FontAwesome>
+              <FontAwesome name="comments"/>
             </TouchableOpacity>
           </View>
         </View>
