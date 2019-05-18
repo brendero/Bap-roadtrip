@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native'
-import FontAwesome, { Icons } from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import MessageItem from './MessageItem';
 import { height } from '../../config/styles';
+import { API_URL } from '../../config/dbconfig';
 
 
 export class Messages extends Component {
@@ -23,7 +24,7 @@ export class Messages extends Component {
   }
   getMessages() {
     console.log(this.props.navigation.state.params.message);
-    axios.get(`http://10.0.2.2:5000/api/messages/${this.props.navigation.state.params.message}`)
+    axios.get(`${API_URL}/api/messages/${this.props.navigation.state.params.message}`)
       .then(res => {
         this.setState({
           messages: res.data.messages
@@ -59,7 +60,7 @@ export class Messages extends Component {
         messages: [message]
       }
     }
-    axios.post('http://10.0.2.2:5000/api/messages/', messageData)
+    axios.post(`${API_URL}/api/messages/`, messageData)
       .then(res => {
         console.log(res);
       this.setState({
@@ -106,7 +107,7 @@ export class Messages extends Component {
             </View>
             <View>
               <TouchableOpacity onPress={this.addMessage}>
-                <FontAwesome>{Icons.paperPlane}</FontAwesome>
+                <FontAwesome name="paper-plane"/>
               </TouchableOpacity>
             </View>
         </View>

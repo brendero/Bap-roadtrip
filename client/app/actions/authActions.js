@@ -3,11 +3,12 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
+import { API_URL } from '../config/dbconfig';
 
 // Register User
 export const registerUser = userData => dispatch => {
   axios
-    .post('http://10.0.2.2:5000/api/users/register', userData)
+    .post(`${API_URL}/api/users/register`, userData)
     .then(res => {
       console.log(res.data)
     })
@@ -19,7 +20,7 @@ export const registerUser = userData => dispatch => {
 
 export const loginUser = userData => dispatch => {
   axios
-    .post('http://10.0.2.2:5000/api/users/login', userData)
+    .post(`${API_URL}/api/users/login`, userData)
     .then(res => {
       const { token } = res.data;
 
@@ -46,7 +47,7 @@ export const logoutUser = () => dispatch => {
 }
 
 export const updateUserAvatar = (user) => dispatch => {
-  axios.post('http://10.0.2.2:5000/api/users/update', user)
+  axios.post(`${API_URL}/api/users/update`, user)
     .then(res => dispatch({
       type: UPDATE_USER_AVATAR,
       payload: res.data

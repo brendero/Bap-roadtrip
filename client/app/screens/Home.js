@@ -17,13 +17,11 @@ import PersonalTrips from './home/PersonalTrips';
 import Requests from './home/Requests';
 import Archive from './home/Archive';
 import Messages from './trip/Messages';
-import FontAwesome, { Icons } from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 import { colors } from '../config/styles';
 import PropTypes from 'prop-types';
-import { PermissionsAndroid } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+import { Permissions, ImagePicker } from 'expo'
 import cloudinaryUpload from '../utils/cloudinary';
-import MapboxGL from '@mapbox/react-native-mapbox-gl';
 import AddTripModal from '../components/Trips/AddTripModal';
 
 const Navigation = createMaterialTopTabNavigator(
@@ -98,13 +96,12 @@ const Navigation = createMaterialTopTabNavigator(
     }
   );
 
-const YOUR_ACCES_TOKEN = "pk.eyJ1IjoiYnJvbnQyIiwiYSI6ImNqdWI4dm1teTA4eXk0M21oOTBuMmM2NGIifQ._07g-0VCeZ7jadmmxRE64g";
-
-MapboxGL.setAccessToken(YOUR_ACCES_TOKEN);
-
-const columbusCircleCoordinates = [
-  4.137480, 51.098190
-];
+const columbusCircleCoordinates = {
+  latitude: 4.137480,
+  longitude: 51.098190,
+  latitudeDelta: 0.0922,
+  longitudeDelta: 0.0421
+};
 
 const TripNavigator = createAppContainer(detailNavigator);
 class Home extends Component {
@@ -144,13 +141,22 @@ class Home extends Component {
       })
     }
   }
+  componentDidMount() {
+    this.getGeoLocation();
+  }
   getGeoLocation() {
-    const granted = PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+    const granted = Permissions.askAsync(Permissions.CAMERA_ROLL)
+
     granted.then(res => {
-      if(res === PermissionsAndroid.RESULTS.GRANTED) {
+      if(res.status === 'granted') {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            const userCoords = [position.coords.longitude, position.coords.latitude]
+            const userCoords = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421
+            }
     
             this.setState({
               userLocation: userCoords
@@ -168,27 +174,27 @@ class Home extends Component {
     .catch(err => console.log(err))
   }
   checkPermission() {
-    const granted = PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)
+    const granted = Permissions.askAsync(Permissions.LOCATION)
+
     granted.then( 
       res => {
-        if(res === PermissionsAndroid.RESULTS.GRANTED) {
+        if(res.status === "granted") {
           const options = {
-            title: 'Select Avatar',
-            storageOptions: {
-              skipBackup: true,
-              path: 'images',
-            },
+            mediaTypes: "Images",
+            allowsEditing: false,
+            base64: true
           };
           
-          ImagePicker.showImagePicker(options, (response) => {          
-            if (response.didCancel) {
+          ImagePicker.launchImageLibraryAsync(options).then((response) => {  
+            console.log(response);        
+            if (response.cancelled) {
               console.log('User cancelled image picker');
             } else if (response.error) {
               console.log('ImagePicker Error: ', response.error);
             } else if (response.customButton) {
               console.log('User tapped custom button: ', response.customButton);
             } else {
-              const source = `data:image/jpeg;base64,${response.data}`;
+              const source = `data:image/jpeg;base64,${response.base64}`;
 
               cloudinaryUpload(source)
               .then(res => {
@@ -219,11 +225,11 @@ class Home extends Component {
         <View>
           <View style={styles.profilePicWrapper}>
             <ImageBackground source={require('../assets/fog-foggy-forest-4827.jpg')} style={styles.profileBackground}>
-              <TouchableHighlight style={styles.logoutBtn} onPress={this.Logout}><FontAwesome style={styles.logoutIcon}>{Icons.signOut}</FontAwesome></TouchableHighlight>
+              <TouchableHighlight style={styles.logoutBtn} onPress={this.Logout}><FontAwesome name="sign-out" style={styles.logoutIcon}/></TouchableHighlight>
               <View>
                 <TouchableOpacity onPress={this.checkPermission}>
                 <Image source={{uri: user.avatar}} style={styles.profilePic}/>
-                <FontAwesome style={{fontSize:20, color: 'white', backgroundColor: colors.secondaryLight, padding: 10, borderRadius: 100, position: 'absolute', bottom: 0, right: 0}}>{Icons.pencil}</FontAwesome>
+                <FontAwesome name="pencil" style={{fontSize:20, color: 'white', backgroundColor: colors.secondaryLight, padding: 10, borderRadius: 100, position: 'absolute', bottom: 0, right: 0}}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.profileName}>{user.name}</Text>
@@ -239,7 +245,7 @@ class Home extends Component {
             }}></TripNavigator>
 
           {this.state.headerVisible ? <TouchableOpacity style={styles.addBtn} onPress={this.toggleModal}>
-            <FontAwesome style={styles.addBtnIcon}>{Icons.plus}</FontAwesome>
+            <FontAwesome name="plus" style={styles.addBtnIcon}/>
           </TouchableOpacity> : null}
         </View>
       </View>

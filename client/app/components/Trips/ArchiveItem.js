@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity, Animated } from 'react-native';
-import Fontawesome, {Icons} from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 import { colors } from '../../config/styles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -52,21 +52,21 @@ class ArchiveItem extends Component {
           </View>
           <View style={styles.membersContainer}>
             <Text style={styles.memberNumber}>{this.props.membersCount}</Text>
-            <Fontawesome style={styles.memberIcon}>{Icons.userO}</Fontawesome>
+            <FontAwesome name="user" style={styles.memberIcon}/>
           </View>
           <View style={styles.bookmarkIcon}>
-            <Fontawesome style={{fontSize: 30, color: colors.secondaryDark}}>{Icons.bookmark}</Fontawesome>
+            <FontAwesome name="bookmark" style={{fontSize: 30, color: colors.secondaryDark}}/>
           </View>
 
       </Animated.View>
       </GestureRecognizer>
       <Animated.View style={[styles.btnWrapper, this.state.btnToggle ? styles.openBtn : styles.closedBtn]}>
         <TouchableOpacity style={styles.restoreBtn} onPress={this.onRestore}>
-          <Fontawesome style={styles.btnIcon}>{Icons.undo}</Fontawesome>
+          <FontAwesome name="undo" style={styles.btnIcon}/>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.deleteBtn} onPress={this.onDelete}>
-          <Fontawesome style={styles.btnIcon}>{Icons.times}</Fontawesome>
+          <FontAwesome name="times" style={styles.btnIcon}/>
         </TouchableOpacity>
       </Animated.View>
       </View>

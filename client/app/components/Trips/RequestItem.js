@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Text, View, Image, TouchableHighlight, StyleSheet } from 'react-native'
-import Fontawesome, { Icons } from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { deleteRequest, updateRequest } from '../../actions/requestActions';
 import { updateTripCollaborators } from '../../actions/tripActions';
+import { API_URL } from '../../config/dbconfig';
 
 class RequestItem extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class RequestItem extends Component {
   }
   // make a function that gets trips name from id
   getTripById() {
-    axios.get(`http://10.0.2.2:5000/api/trips/${this.props.trip}`)
+    axios.get(`${API_URL}/api/trips/${this.props.trip}`)
       .then(res => {
         this.setState({
           trip: res.data
@@ -35,7 +36,7 @@ class RequestItem extends Component {
   }
   // make a function that gets requestingUsers name from id
   getUserById() {
-    axios.get(`http://10.0.2.2:5000/api/users/detail/${this.props.requesterId}`)
+    axios.get(`${API_URL}/api/users/detail/${this.props.requesterId}`)
       .then(res => {
         this.setState({
           user: res.data
@@ -70,10 +71,10 @@ class RequestItem extends Component {
         </View>
         <View style={styles.btnWrapper}> 
           <TouchableHighlight style={styles.btnApproved} onPress={this.onApprove}>
-              <Fontawesome style={{color: '#FFFFFF'}}>{Icons.check}</Fontawesome>
+              <FontAwesome name="check" style={{color: '#FFFFFF'}}/>
           </TouchableHighlight>
           <TouchableHighlight style={styles.btnDenied} onPress={this.onDeny}>
-              <Fontawesome style={{color: '#FFFFFF'}}>{Icons.times}</Fontawesome>
+              <FontAwesome name="times" style={{color: '#FFFFFF'}}/>
           </TouchableHighlight>
         </View>
       </View>
