@@ -42,7 +42,8 @@ class AddTripModal extends Component {
         addres: `${addres[1]} ${addres[0]} ${addres[3]}`,
         lattitude,
         longitude
-      }
+      },
+      searchResults: []
     })
   }
   searchAddressLocation(adress) {
@@ -67,7 +68,7 @@ class AddTripModal extends Component {
                 messageId: res.data._id
             }  
             this.props.addTrip(newTripData);
-            this.props.onPress;
+            this.props.onPress();
         })
     }
   }
@@ -88,7 +89,6 @@ class AddTripModal extends Component {
             <Image source={require('../../assets/Logo.png')} style={{width: 50, height: 50}}></Image>
           </View>
           <View style={{margin: 10}}>
-            <Text>{this.state.destination.latitude}</Text>
             <Text>Name</Text>
             <TextInput
             style={modal.nameInput}

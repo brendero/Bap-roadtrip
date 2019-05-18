@@ -21,7 +21,6 @@ class AddMember extends Component {
   searchUsers(value) {
     axios.get(`${API_URL}/api/users/search?filter=${value}`)
       .then(res => {
-        console.log(res.data);
         this.setState({filteredUsers: res.data})
       })
       .catch(err => console.log(err))

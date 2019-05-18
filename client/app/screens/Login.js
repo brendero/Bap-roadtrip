@@ -20,8 +20,8 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      email: '',
-      password: '',
+      email: 'roeckie_brent@live.be',
+      password: '123456',
       errors: {}
     }
 
@@ -64,7 +64,7 @@ class Login extends Component {
             
             <View style={styles.formWrapper}>
               <View style={styles.formInput}>
-                <FontAwesome name="envelope" style={styles.inputIcons}/>
+                <FontAwesome name="envelope-o" style={styles.inputIcons}/>
                 <TextInput
                   style={{padding: 0, width: '80%'}}
                   value={this.state.email}

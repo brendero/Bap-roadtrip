@@ -52,7 +52,7 @@ class ArchiveItem extends Component {
           </View>
           <View style={styles.membersContainer}>
             <Text style={styles.memberNumber}>{this.props.membersCount}</Text>
-            <FontAwesome name="user" style={styles.memberIcon}/>
+            <FontAwesome name="user-o" style={styles.memberIcon}/>
           </View>
           <View style={styles.bookmarkIcon}>
             <FontAwesome name="bookmark" style={{fontSize: 30, color: colors.secondaryDark}}/>

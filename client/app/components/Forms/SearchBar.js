@@ -30,7 +30,7 @@ export default class SearchBar extends Component {
           </View>
           <View style={styles.messageWrapper}>
             <TouchableOpacity onPress={this.props.messageOnPress}>
-              <FontAwesome name="comments"/>
+              <FontAwesome name="comments-o"/>
             </TouchableOpacity>
           </View>
         </View>

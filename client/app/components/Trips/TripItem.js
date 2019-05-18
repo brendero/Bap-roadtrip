@@ -50,7 +50,7 @@ class TripItem extends Component {
           </View>
           <View style={styles.membersContainer}>
             <Text style={styles.memberNumber}>{this.props.membersCount}</Text>
-            <FontAwesome name="user" style={styles.memberIcon}/>
+            <FontAwesome name="user-o" style={styles.memberIcon}/>
           </View>
       </Animated.View>
       </TouchableOpacity>
