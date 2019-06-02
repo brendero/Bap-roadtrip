@@ -3,19 +3,23 @@ import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'rea
 
 export default class LocationsView extends Component {
   render() {
+    console.log(this.props.stops)
+    const { stops } = this.props;
+
     return (
       <View style={{marginTop: 20}}>
         <ScrollView
           horizontal={true}>
-          {this.props.stop === [] ? this.props.stops.map((name, thumbnail, location) => (
-            <View style={styles.stopWrapper}>
-              <Image source={{uri: thumbnail}} style={styles.stopImage}/>
-              <View>
-                <Text style={{fontWeight: 'bold', color: 'black', fontSize: 12}}>{ name }</Text>
-                <Text style={{color: 'black', fontSize: 12}}>{ location.addres }</Text>
+            {/* TODO: add onPress to go to place */}
+          {(stops || []).map((stop) => (
+            <View style={styles.stopWrapper} key={stop._id}>
+              <Image source={{uri: stop.thumbnail}} style={styles.stopImage}/>
+              <View style={styles.infoWrapper}>
+                <Text style={{fontWeight: 'bold', color: 'black', fontSize: 12}}>{ stop.name }</Text>
+                <Text style={{color: 'black', fontSize: 12}}>{ stop.location.addres }</Text>
               </View>
             </View>
-          )) : null}
+          ))}
           <TouchableOpacity style={{width: 170, height: 170, backgroundColor: 'lightgrey', justifyContent: 'center', alignItems: 'center'}}>
           </TouchableOpacity>
         </ScrollView>

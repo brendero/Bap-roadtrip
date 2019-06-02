@@ -56,6 +56,7 @@ class AddMember extends Component {
               value={this.state.filterQuery}
               onChangeText={value => this.searchUsers(value)}
               placeholder="Search for users"
+              style={styles.inputText}
             />
             <FontAwesome name="search"/>
           </View>
@@ -68,7 +69,7 @@ class AddMember extends Component {
                     <View>
                       <Image source={{uri: user.avatar}} style={styles.profileImage}/>
                     </View>
-                    <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
+                    <View style={{flex: 1, flexDirection: 'column', marginLeft: 5, justifyContent: 'flex-start', alignContent: 'flex-start'}}>
                       <Text>{user.name}</Text>
                       <Text>{user.email}</Text>
                     </View>
@@ -124,7 +125,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    paddingVertical: 10
+  },
+  inputText: {
+    width: '90%'
   },
   userWrapper: {
     width: '90%',

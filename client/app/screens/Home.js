@@ -72,9 +72,6 @@ const Navigation = createMaterialTopTabNavigator(
     {
       MessageScreen: {
         screen: Messages,
-        navigationoptions: {
-          title: 'Messages'
-        }
       }
     }
   )

@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native'
-import { FontAwesome } from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import axios from 'axios';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; 
 import MessageItem from './MessageItem';
 import { height, colors } from '../../config/styles';
 import { API_URL } from '../../config/dbconfig';
-
+import { FontAwesome } from '@expo/vector-icons';
 
 export class Messages extends Component {
+  static navigationOptions = ({ navigation }) => {
+    let headerTitle = 'Messages'
+    let headerLeft = (
+      <TouchableOpacity style={{marginLeft: 10}} onPress={() => navigation.goBack(null)}>
+        <FontAwesome name="chevron-left"/>
+      </TouchableOpacity>
+    )
+    return { headerTitle, headerLeft }
+  }
   constructor(props) {
     super(props);
 

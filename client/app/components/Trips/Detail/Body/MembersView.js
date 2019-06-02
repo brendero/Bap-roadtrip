@@ -54,7 +54,6 @@ class MembersView extends Component {
   }
   render() {
     const { users } = this.state;
-    console.log(this.state.users)
     return (
       <View style={{marginTop: 20}}>
         <ScrollView

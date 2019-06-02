@@ -17,7 +17,7 @@ class AddTripModal extends Component {
     
     this.state = {
       searchResults: [],
-      destination: '',
+      destination: null,
       newTripName: '',
       endLocation: '',
       markerCoords: ''
@@ -66,9 +66,15 @@ class AddTripModal extends Component {
                 name: this.state.newTripName,
                 location : locationData,
                 messageId: res.data._id
-            }  
-            this.props.addTrip(newTripData);
-            this.props.onPress();
+            }
+            this.props.addTrip(newTripData)
+            this.setState({
+              destination: null,
+              newTripName: '',
+              endLocation: '',
+              markerCoords: ''
+            })
+            this.props.onPress()
         })
     }
   }
@@ -120,8 +126,8 @@ class AddTripModal extends Component {
           </View>
 
           {/* TODO: conditional disabled if tripName is empty or destination is empty */}
-          <TouchableHighlight onPress={this.addNewTrip} style={{backgroundColor: colors.secondaryDark, padding: 10, borderRadius: 50,position: 'absolute', bottom: 10, right: 10}}>
-            <Text style={{color: 'white'}}><FontAwesome name="paper-plane" style={{paddingRight: 30}}/>Submit</Text>
+          <TouchableHighlight onPress={this.addNewTrip} style={{flex: 1, backgroundColor: colors.secondaryDark, width: 100, padding: 10, borderRadius: 50,position: 'absolute', bottom: 10, right: 10, flexDirection:'row', justifyContent: 'space-between'}}>
+            <Text style={{color: 'white'}}><FontAwesome name="paper-plane" style={{marginRight: 5}}/>Submit</Text>
           </TouchableHighlight>
         </View>
       </View>
