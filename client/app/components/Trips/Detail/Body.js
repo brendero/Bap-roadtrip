@@ -6,19 +6,21 @@ import BookingsView from './Body/BookingsView'
 
 export default class OptionsBody extends Component {
   render() {
+    const { trip, locationFunction} = this.props
+    const {collaborators, bookings, stops} = trip
     return (
       <ScrollView>
         <View style={styles.itemWrapper} >
           <Text>Members</Text>
-          <MembersView trip={this.props.trip} members={this.props.trip.collaborators}/>
+          <MembersView trip={this.props.trip} members={collaborators}/>
         </View>
         <View style={styles.itemWrapper}>
           <Text>Stops</Text>
-          <LocationsView stops={this.props.trip.stops}/>
+          <LocationsView stops={stops} locationFunction={locationFunction}/>
         </View>
         <View style={styles.itemWrapper}>
           <Text>Bookings</Text>
-          <BookingsView bookings={this.props.trip.bookings}/>
+          <BookingsView bookings={bookings}/>
         </View>
       </ScrollView>
     )

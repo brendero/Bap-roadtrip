@@ -27,7 +27,7 @@ export default class SearchBar extends Component {
     const { searchResults } = this.state;
 
     return (
-      <View style={{width: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 20, zIndex: 1}}>
+      <View style={{width: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 20, zIndex: 2}}>
         <View style={styles.SearchBar}>
           <View style={styles.formWrapper}>
             <FontAwesome name="search" style={{paddingHorizontal: 12}}/>

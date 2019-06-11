@@ -23,6 +23,7 @@ class DetailPage extends Component {
 
     this.setNewStopMarker = this.setNewStopMarker.bind(this);
     this.addNewStop = this.addNewStop.bind(this);
+    this.setMapLocation = this.setMapLocation.bind(this);
   }
   componentDidMount() {
     this.getTripDetails();
@@ -36,6 +37,17 @@ class DetailPage extends Component {
     this.setState({
       trip: tripData
     })
+  }
+  setMapLocation(lat, lon) {
+    this.setState({
+      newStopLoc: {
+        latitude: parseFloat(lat),
+        longitude: parseFloat(lon),
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      }
+    })
+
   }
   setNewStopMarker(address, lattitude, longitude) {
     this.setState({
@@ -99,8 +111,8 @@ class DetailPage extends Component {
     .catch(err => console.log(err))
   }
   render() {
-    const { stops } = this.state.trip;
-    const { newStopMarker, newStopLoc, userLocation, newStopInfo } = this.state;
+    const { newStopMarker, newStopLoc, userLocation, newStopInfo, trip } = this.state;
+    const { stops } = trip;
 
     return (
       <View style={styles.container}>
@@ -120,7 +132,7 @@ class DetailPage extends Component {
                 <MapView.Callout onPress={this.addNewStop}>
                   <View style={callout.wrapper}>
                     <View>
-                      <Text style={{fontWeight: 'bold'}}>Click to see details</Text>
+                      <Text style={{fontWeight: 'bold'}}>Click to add as a stop</Text>
                       <Text>{newStopInfo.location.addres}</Text>
                     </View>
                     <View style={callout.btnWrapper}>
@@ -141,7 +153,7 @@ class DetailPage extends Component {
               : null
           }
         </MapView>
-        <BottomCard tripData={this.state.trip}/>
+        <BottomCard locationFunction={this.setMapLocation} tripData={trip}/>
       </View>
     )
   }
