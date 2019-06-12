@@ -69,7 +69,7 @@ class Register extends Component {
             
             <View style={styles.formWrapper}>
               <View style={styles.formInput}>
-                <FontAwesome name="envelope" style={styles.inputIcons}/>
+                <FontAwesome name="envelope-o" style={styles.inputIcons}/>
                 <TextInput
                   style={{padding: 0, width: '80%'}}
                   value={this.state.email}
@@ -82,7 +82,7 @@ class Register extends Component {
               </View>
               {errors.email ? <Text style={styles.errorMsg}>{errors.email}</Text> : null}
               <View style={styles.formInput}>
-                <FontAwesome name="user" style={styles.inputIcons}/>
+                <FontAwesome name="user-o" style={styles.inputIcons}/>
                 <TextInput
                   style={{padding: 0, width: '80%'}}
                   value={this.state.name}

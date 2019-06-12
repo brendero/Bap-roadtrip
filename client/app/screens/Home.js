@@ -72,9 +72,6 @@ const Navigation = createMaterialTopTabNavigator(
     {
       MessageScreen: {
         screen: Messages,
-        navigationoptions: {
-          title: 'Messages'
-        }
       }
     }
   )
@@ -186,7 +183,6 @@ class Home extends Component {
           };
           
           ImagePicker.launchImageLibraryAsync(options).then((response) => {  
-            console.log(response);        
             if (response.cancelled) {
               console.log('User cancelled image picker');
             } else if (response.error) {

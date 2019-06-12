@@ -10,6 +10,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
   const errors = {};
 
   Trip.find({ collaborators: req.user.id })
+    .sort({ createdAt:-1 })
     .then(profile => {
       if(!profile) {
         errors.noprofile = 'there are no trips yet for this user'

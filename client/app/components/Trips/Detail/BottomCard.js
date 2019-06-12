@@ -38,16 +38,18 @@ export default class BottomCard extends Component {
     }
   }
   render() {
+    const { tripData, locationFunction } = this.props;
+
     return (
       <Animated.View style={[styles.container, { bottom: this.state.bottom }]}>
         <View style={[styles.options, styles.roundTop]}>
           <TouchableHighlight style={styles.roundTop} onPress={this.toggleOpen.bind(this)}>
             <GestureRecognizer onSwipeUp={() => this.openOptions()} onSwipeDown={() => this.closeOptions()}>
-              <OptionsHeader name={this.props.tripData.name}/>
+              <OptionsHeader name={tripData.name}/>
             </GestureRecognizer>
           </TouchableHighlight>
           
-          <OptionsBody trip={this.props.tripData} style={{ paddingBottom: 200 }} />
+          <OptionsBody locationFunction={locationFunction} trip={tripData} style={{ paddingBottom: 200 }} />
         </View>
       </Animated.View>
     )
@@ -59,6 +61,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: "100%",
     elevation: 3,
+    zIndex: 999,
     paddingHorizontal: 10,
   },
   options: {

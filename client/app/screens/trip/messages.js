@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native'
-import { FontAwesome } from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import axios from 'axios';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; 
 import MessageItem from './MessageItem';
-import { height } from '../../config/styles';
+import { height, colors } from '../../config/styles';
 import { API_URL } from '../../config/dbconfig';
-
+import { FontAwesome } from '@expo/vector-icons';
 
 export class Messages extends Component {
+  static navigationOptions = ({ navigation }) => {
+    let headerTitle = 'Messages'
+    let headerLeft = (
+      <TouchableOpacity style={{marginLeft: 10}} onPress={() => navigation.goBack(null)}>
+        <FontAwesome name="chevron-left"/>
+      </TouchableOpacity>
+    )
+    return { headerTitle, headerLeft }
+  }
   constructor(props) {
     super(props);
 
@@ -23,7 +31,6 @@ export class Messages extends Component {
     this.getMessages();
   }
   getMessages() {
-    console.log(this.props.navigation.state.params.message);
     axios.get(`${API_URL}/api/messages/${this.props.navigation.state.params.message}`)
       .then(res => {
         this.setState({
@@ -49,7 +56,6 @@ export class Messages extends Component {
     let messageData;
 
     if(this.state.messages !== null) {
-      console.log(this.props.navigation.state.params.message);
       messageData = {
         id: this.props.navigation.state.params.message,
         messages: [...this.state.messages, message]
@@ -107,7 +113,7 @@ export class Messages extends Component {
             </View>
             <View>
               <TouchableOpacity onPress={this.addMessage}>
-                <FontAwesome name="paper-plane"/>
+                <FontAwesome name="paper-plane" style={styles.sendIcon}/>
               </TouchableOpacity>
             </View>
         </View>
@@ -135,6 +141,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%'
+  },
+  sendIcon: {
+    color: colors.secondaryLight,
+    fontSize: 14
   }
 })
 

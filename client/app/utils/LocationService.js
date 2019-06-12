@@ -14,7 +14,6 @@ export const forwardGeocoding = (address) => {
 
 export const reverseGeocoding = (coordinates) => {
   // TODO: use LocationIq to get Adress from coordinates
-  console.log(coordinates);
   return new Promise((resolve, reject) => {
     axios.get(`${API_PREFIX}/reverse.php?key=${keys.LOCATIONIQ_ACCESS_TOKEN}&lat=${coordinates.lattitude}&lon=${coordinates.longitude}&format=json`)
       .then(res => resolve(res))
