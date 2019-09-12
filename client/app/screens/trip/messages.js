@@ -68,12 +68,11 @@ export class Messages extends Component {
     }
     axios.post(`${API_URL}/api/messages/`, messageData)
       .then(res => {
-        console.log(res);
-      this.setState({
-        messages: res.data.messages,
-        messageBody: ''
+        this.setState({
+          messages: res.data.messages,
+          messageBody: ''
+        })
       })
-    })
       .catch(err => console.log(err))
   }
   render() {

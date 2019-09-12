@@ -70,7 +70,7 @@ class AddMember extends Component {
                       <Image source={{uri: user.avatar}} style={styles.profileImage}/>
                     </View>
                     <View style={{flex: 1, flexDirection: 'column', marginLeft: 5, justifyContent: 'flex-start', alignContent: 'flex-start'}}>
-                      <Text>{user.name}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{user.name}</Text>
                       <Text>{user.email}</Text>
                     </View>
                   <View>
