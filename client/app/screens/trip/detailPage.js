@@ -152,6 +152,16 @@ class DetailPage extends Component {
               ))
               : null
           }
+          {/* TODO: add final location to map with different marker(use wayking logo as marker) */}
+          {
+            trip ?
+            <MapView.Marker 
+              title={`end Destination ${trip.location.addres}.`}
+              coordinate={{latitude: parseFloat(trip.location.lat), longitude: parseFloat(trip.location.lng)}}
+              image={require('../../../assets/CustomMarker.png')}
+            /> :
+            null 
+          }
         </MapView>
         <BottomCard locationFunction={this.setMapLocation} tripData={trip}/>
       </View>
